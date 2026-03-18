@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Pizzelato — Urban Pizza Cone</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ouro:#c8872a;
+  --ouro2:#e8a84a;
+  --fogo:#e84d1a;
+  --bg:#0a0705;
+  --bg2:#120e09;
+  --bg3:#1c1510;
+  --bg4:#261d14;
+  --txt:#f5ede0;
+  --txt2:#c9b89a;
+  --txt3:#8a6f52;
+  --brd:rgba(200,135,42,.15);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* NOISE TEXTURE */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");opacity:.4;pointer-events:none;z-index:0}
+
+/* HERO */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200,135,42,.12) 0%, transparent 70%),radial-gradient(ellipse 40% 40% at 20% 80%, rgba(232,77,26,.08) 0%, transparent 60%),linear-gradient(180deg,#0a0705 0%,#0f0a06 100%)}
+.hero-glow{position:absolute;top:10%;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(200,135,42,.15) 0%,transparent 70%);pointer-events:none;animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.1)}}
+
+.logo-area{position:relative;z-index:1;margin-bottom:32px;animation:fadeDown .8s ease forwards}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
+.logo-icon{font-size:52px;display:block;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(200,135,42,.5))}
+.logo-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,12vw,96px);letter-spacing:10px;color:#fff;line-height:.9;text-shadow:0 0 40px rgba(200,135,42,.3)}
+.logo-sub{font-size:11px;letter-spacing:6px;text-transform:uppercase;color:var(--ouro);margin-top:8px;font-weight:300}
+
+.hero-tag{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border:1px solid var(--brd);border-radius:40px;background:rgba(200,135,42,.06);font-size:12px;color:var(--txt2);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;position:relative;z-index:1;animation:fadeUp .8s .2s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ouro);box-shadow:0 0 8px var(--ouro);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.hero-tagline{font-family:'Playfair Display',serif;font-size:clamp(18px,4vw,28px);color:var(--txt2);font-style:italic;margin-bottom:36px;position:relative;z-index:1;animation:fadeUp .8s .3s ease both;line-height:1.4}
+.hero-tagline span{color:var(--ouro);font-style:normal}
+
+.btn-pedir{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;background:linear-gradient(135deg,var(--ouro),var(--ouro2));border:none;border-radius:4px;color:#0a0705;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;cursor:pointer;text-decoration:none;position:relative;z-index:1;animation:fadeUp .8s .4s ease both;transition:all .25s;box-shadow:0 4px 24px rgba(200,135,42,.3)}
+.btn-pedir:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(200,135,42,.45)}
+.btn-pedir svg{width:18px;height:18px}
+
+.hero-scroll{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--txt3);font-size:10px;letter-spacing:2px;text-transform:uppercase;animation:fadeUp .8s .6s ease both;z-index:1}
+.scroll-line{width:1px;height:40px;background:linear-gradient(var(--ouro),transparent);animation:scrollAnim 2s ease-in-out infinite}
+@keyframes scrollAnim{0%,100%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:14px;margin:0 20px 40px;opacity:.4}
+.divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--ouro),transparent)}
+.divider-icon{font-size:16px;color:var(--ouro)}
+
+/* SECTIONS */
+.section{padding:60px 20px;position:relative;z-index:1;max-width:960px;margin:0 auto}
+.sec-header{text-align:center;margin-bottom:48px}
+.sec-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border:1px solid var(--brd);background:rgba(200,135,42,.05);border-radius:40px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ouro2);margin-bottom:14px}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,8vw,68px);letter-spacing:6px;color:#fff;line-height:.9;margin-bottom:10px}
+.sec-desc{font-size:14px;color:var(--txt3);letter-spacing:.5px}
+
+/* ASSINATURA */
+.assinatura-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.assinatura-grid{grid-template-columns:1fr}}
+
+.assinatura-card{position:relative;background:var(--bg2);border:1px solid rgba(200,135,42,.25);border-radius:8px;padding:28px;overflow:hidden;transition:all .3s}
+.assinatura-card:hover{border-color:rgba(200,135,42,.5);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+.assinatura-card.gold{border-color:rgba(200,135,42,.4);background:linear-gradient(135deg,rgba(200,135,42,.06),var(--bg2))}
+.assinatura-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--ouro),transparent)}
+.assinatura-card.gold::before{background:linear-gradient(90deg,transparent,var(--ouro2),var(--fogo),var(--ouro2),transparent)}
+.as-emoji{font-size:32px;margin-bottom:10px;display:block}
+.as-name{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:#fff;margin-bottom:4px;line-height:1}
+.as-sub{font-size:11px;color:var(--ouro);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+.as-ingredients{list-style:none;margin-bottom:18px}
+.as-ingredients li{font-size:13px;color:var(--txt2);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:6px}
+.as-ingredients li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--ouro);flex-shrink:0}
+.as-price{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--ouro);letter-spacing:2px}
+.as-price span{font-size:16px;color:var(--txt3);font-family:'Inter',sans-serif;font-weight:300;letter-spacing:0}
+.as-tag{position:absolute;top:16px;right:16px;background:linear-gradient(135deg,var(--ouro),var(--ouro2));color:#0a0705;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 9px;border-radius:2px}
+
+/* PRODUTO GRID */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.prod-card{background:var(--bg2);border:1px solid var(--brd);border-radius:8px;padding:20px;transition:all .25s;cursor:pointer;position:relative;overflow:hidden}
+.prod-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,135,42,.04),transparent);opacity:0;transition:opacity .3s}
+.prod-card:hover{border-color:rgba(200,135,42,.35);transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.prod-card:hover::after{opacity:1}
+.prod-cat-line{height:2px;border-radius:1px;margin-bottom:13px}
+.cat-trad .prod-cat-line{background:linear-gradient(90deg,#1a5276,#2980b9)}
+.cat-prem .prod-cat-line{background:linear-gradient(90deg,#1e8449,#27ae60)}
+.cat-doce .prod-cat-line{background:linear-gradient(90deg,#7d3c98,#9b59b6)}
+.prod-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:5px}
+.prod-ingr{font-size:12px;color:var(--txt3);line-height:1.6;margin-bottom:14px}
+.prod-footer{display:flex;align-items:center;justify-content:space-between}
+.prod-price{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--ouro);letter-spacing:1px}
+.prod-cat-badge{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border-radius:20px}
+.badge-trad{background:rgba(26,82,118,.2);color:#5dade2;border:1px solid rgba(26,82,118,.3)}
+.badge-prem{background:rgba(30,132,73,.2);color:#58d68d;border:1px solid rgba(30,132,73,.3)}
+.badge-doce{background:rgba(125,60,152,.2);color:#c39bd3;border:1px solid rgba(125,60,152,.3)}
+
+/* BEBIDAS */
+.bebidas-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.beb-card{background:var(--bg2);border:1px solid var(--brd);border-radius:8px;padding:16px 22px;text-align:center;min-width:130px;transition:all .2s}
+.beb-card:hover{border-color:rgba(200,135,42,.3);transform:translateY(-2px)}
+.beb-emoji{font-size:28px;display:block;margin-bottom:7px}
+.beb-name{font-size:13px;font-weight:600;color:var(--txt2);margin-bottom:4px}
+.beb-price{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--ouro)}
+
+/* CTA FINAL */
+.cta-section{padding:80px 20px;text-align:center;position:relative;z-index:1}
+.cta-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(200,135,42,.08) 0%,transparent 70%)}
+.cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,7vw,64px);letter-spacing:6px;color:#fff;margin-bottom:12px;position:relative;z-index:1}
+.cta-sub{font-size:15px;color:var(--txt2);margin-bottom:36px;position:relative;z-index:1;font-family:'Playfair Display',serif;font-style:italic}
+.btn-wa{display:inline-flex;align-items:center;gap:12px;padding:18px 40px;background:#25d366;border:none;border-radius:4px;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;cursor:pointer;text-decoration:none;transition:all .25s;box-shadow:0 4px 24px rgba(37,211,102,.25);position:relative;z-index:1}
+.btn-wa:hover{background:#20ba5a;transform:translateY(-2px);box-shadow:0 8px 32px rgba(37,211,102,.4)}
+.btn-wa svg{width:22px;height:22px}
+
+/* FOOTER */
+footer{padding:32px 20px;text-align:center;border-top:1px solid var(--brd);position:relative;z-index:1}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:5px;color:var(--ouro);margin-bottom:6px}
+.footer-txt{font-size:11px;color:var(--txt3);letter-spacing:1px}
+
+/* STICKY CTA */
+.sticky-cta{position:fixed;bottom:16px;right:16px;z-index:100;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.sticky-btn{display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:40px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;transition:all .25s;text-decoration:none;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.sticky-wa{background:#25d366;color:#fff}
+.sticky-wa:hover{background:#20ba5a;transform:scale(1.05)}
+
+/* ANIMATIONS */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+
+  <div class="logo-area">
+    <span class="logo-icon">🔥</span>
+    <h1 class="logo-title">PIZZELATO</h1>
+    <p class="logo-sub">Urban Pizza Cone · Itabaiana, SE</p>
+  </div>
+
+  <div class="hero-tag">
+    <span class="dot"></span>
+    Único na região
+  </div>
+
+  <p class="hero-tagline">O cone que <span>derrete</span> qualquer resistência</p>
+
+  <a href="#cardapio" class="btn-pedir">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/></svg>
+    Ver Cardápio
+  </a>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Rolar
+  </div>
+</section>
+
+<!-- CARDÁPIO -->
+<main id="cardapio" style="position:relative;z-index:1">
+
+  <!-- ASSINATURA -->
+  <section class="section reveal">
+    <div class="sec-header">
+      <div class="sec-badge">✦ Exclusivos ✦</div>
+      <h2 class="sec-title">ASSINATURA</h2>
+      <p class="sec-desc">Nossa criação mais sofisticada. Uma experiência única.</p>
+    </div>
+
+    <div class="assinatura-grid">
+      <div class="assinatura-card gold">
+        <div class="as-tag">OURO COMESTÍVEL</div>
+        <span class="as-emoji">🥩🦐</span>
+        <h3 class="as-name">FILÉ MIGNON + CAMARÃO</h3>
+        <p class="as-sub">Toque de Folha de Ouro Comestível</p>
+        <ul class="as-ingredients">
+          <li>Molho especial da casa</li>
+          <li>Queijo gorgonzola</li>
+          <li>Filé mignon em tiras selado na manteiga</li>
+          <li>Camarão selado ao molho cremoso</li>
+          <li>Finalização com folha de ouro comestível</li>
+        </ul>
+        <div class="as-price">R$ 79<span>,90</span></div>
+      </div>
+
+      <div class="assinatura-card gold">
+        <div class="as-tag">PISTACHE GOLD</div>
+        <span class="as-emoji">💚✨</span>
+        <h3 class="as-name">PISTACHE GOLD</h3>
+        <p class="as-sub">Assinatura Pizzelato</p>
+        <ul class="as-ingredients">
+          <li>Creme de pistache italiano Gran Caravella</li>
+          <li>Base cremosa com notas suaves de avelã</li>
+          <li>Pistache em pedaços</li>
+          <li>Finalização com folha de ouro comestível</li>
+        </ul>
+        <div class="as-price">R$ 49<span>,90</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider reveal"><div class="divider-line"></div><div class="divider-icon">🔥</div><div class="divider-line"></div></div>
+
+  <!-- PREMIUM -->
+  <section class="section reveal">
+    <div class="sec-header">
+      <div class="sec-badge">⭐ Selecionados</div>
+      <h2 class="sec-title">PREMIUM</h2>
+      <p class="sec-desc">Ingredientes nobres, sabores que surpreendem.</p>
+    </div>
+    <div class="prod-grid">
+      <div class="prod-card cat-prem">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Camarão Supremo</div>
+        <div class="prod-ingr">Molho especial · Mussarela · Camarão · Catupiry</div>
+        <div class="prod-footer"><div class="prod-price">R$ 27</div><span class="prod-cat-badge badge-prem">Premium</span></div>
+      </div>
+      <div class="prod-card cat-prem">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Filé Mignon Especial</div>
+        <div class="prod-ingr">Molho especial · Mussarela · Filé mignon selado na manteiga · Cebola caramelizada</div>
+        <div class="prod-footer"><div class="prod-price">R$ 27</div><span class="prod-cat-badge badge-prem">Premium</span></div>
+      </div>
+      <div class="prod-card cat-prem">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Costela BBQ</div>
+        <div class="prod-ingr">Molho · Mussarela · Costela desfiada · Barbecue · Cebola caramelizada</div>
+        <div class="prod-footer"><div class="prod-price">R$ 27</div><span class="prod-cat-badge badge-prem">Premium</span></div>
+      </div>
+      <div class="prod-card cat-prem">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Frango com Cream Cheese</div>
+        <div class="prod-ingr">Molho · Mussarela · Frango · Cream cheese</div>
+        <div class="prod-footer"><div class="prod-price">R$ 27</div><span class="prod-cat-badge badge-prem">Premium</span></div>
+      </div>
+      <div class="prod-card cat-prem">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Cheddar Calabacon</div>
+        <div class="prod-ingr">Molho · Mussarela · Cheddar especial · Bacon · Calabresa</div>
+        <div class="prod-footer"><div class="prod-price">R$ 27</div><span class="prod-cat-badge badge-prem">Premium</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider reveal"><div class="divider-line"></div><div class="divider-icon">🍕</div><div class="divider-line"></div></div>
+
+  <!-- TRADICIONAIS -->
+  <section class="section reveal">
+    <div class="sec-header">
+      <div class="sec-badge">🍕 Clássicos</div>
+      <h2 class="sec-title">TRADICIONAIS</h2>
+      <p class="sec-desc">Os favoritos de sempre, com nosso toque especial.</p>
+    </div>
+    <div class="prod-grid">
+      <div class="prod-card cat-trad">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Calabresa</div>
+        <div class="prod-ingr">Molho · Mussarela · Calabresa · Cebola fatiada</div>
+        <div class="prod-footer"><div class="prod-price">R$ 22</div><span class="prod-cat-badge badge-trad">Tradicional</span></div>
+      </div>
+      <div class="prod-card cat-trad">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Frango Cremoso</div>
+        <div class="prod-ingr">Molho · Mussarela · Frango · Catupiry · Milho verde</div>
+        <div class="prod-footer"><div class="prod-price">R$ 22</div><span class="prod-cat-badge badge-trad">Tradicional</span></div>
+      </div>
+      <div class="prod-card cat-trad">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Bacon Tradicional</div>
+        <div class="prod-ingr">Molho · Mussarela · Bacon em cubos</div>
+        <div class="prod-footer"><div class="prod-price">R$ 22</div><span class="prod-cat-badge badge-trad">Tradicional</span></div>
+      </div>
+      <div class="prod-card cat-trad">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Portuguesa</div>
+        <div class="prod-ingr">Molho · Mussarela · Presunto · Ovo · Cebola · Azeitona</div>
+        <div class="prod-footer"><div class="prod-price">R$ 22</div><span class="prod-cat-badge badge-trad">Tradicional</span></div>
+      </div>
+      <div class="prod-card cat-trad">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Atum</div>
+        <div class="prod-ingr">Molho · Mussarela · Atum · Cebola</div>
+        <div class="prod-footer"><div class="prod-price">R$ 22</div><span class="prod-cat-badge badge-trad">Tradicional</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider reveal"><div class="divider-line"></div><div class="divider-icon">🍫</div><div class="divider-line"></div></div>
+
+  <!-- DOCES -->
+  <section class="section reveal">
+    <div class="sec-header">
+      <div class="sec-badge">🍫 Para adoçar</div>
+      <h2 class="sec-title">DOCES</h2>
+      <p class="sec-desc">Irresistíveis. Impossível pedir só um.</p>
+    </div>
+    <div class="prod-grid">
+      <div class="prod-card cat-doce">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Chocolate ao Leite com Morango</div>
+        <div class="prod-ingr">Chocolate ao leite cremoso + morangos frescos</div>
+        <div class="prod-footer"><div class="prod-price">R$ 22</div><span class="prod-cat-badge badge-doce">Doce</span></div>
+      </div>
+      <div class="prod-card cat-doce">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Prestígio</div>
+        <div class="prod-ingr">Chocolate cremoso prestígio + pedaços de Prestígio</div>
+        <div class="prod-footer"><div class="prod-price">R$ 22</div><span class="prod-cat-badge badge-doce">Doce</span></div>
+      </div>
+      <div class="prod-card cat-doce">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Romeu e Julieta</div>
+        <div class="prod-ingr">Goiabada cremosa + mussarela gratinada</div>
+        <div class="prod-footer"><div class="prod-price">R$ 22</div><span class="prod-cat-badge badge-doce">Doce</span></div>
+      </div>
+      <div class="prod-card cat-doce">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Galak com Negresco</div>
+        <div class="prod-ingr">Chocolate Galak + pedaços de Negresco</div>
+        <div class="prod-footer"><div class="prod-price">R$ 22</div><span class="prod-cat-badge badge-doce">Doce</span></div>
+      </div>
+      <div class="prod-card cat-doce">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">KitKat</div>
+        <div class="prod-ingr">Chocolate KitKat + pedaços de KitKat</div>
+        <div class="prod-footer"><div class="prod-price">R$ 22</div><span class="prod-cat-badge badge-doce">Doce</span></div>
+      </div>
+      <div class="prod-card cat-doce">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Nutella com Morango</div>
+        <div class="prod-ingr">Nutella original + pedaços de morango</div>
+        <div class="prod-footer"><div class="prod-price">R$ 22</div><span class="prod-cat-badge badge-doce">Doce</span></div>
+      </div>
+      <div class="prod-card cat-doce">
+        <div class="prod-cat-line"></div>
+        <div class="prod-name">Ouro Branco</div>
+        <div class="prod-ingr">Creme de leite ninho + pedaços de Ouro Branco</div>
+        <div class="prod-footer"><div class="prod-price">R$ 22</div><span class="prod-cat-badge badge-doce">Doce</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider reveal"><div class="divider-line"></div><div class="divider-icon">🥤</div><div class="divider-line"></div></div>
+
+  <!-- BEBIDAS & EXTRA -->
+  <section class="section reveal">
+    <div class="sec-header">
+      <div class="sec-badge">🥤 Para acompanhar</div>
+      <h2 class="sec-title">BEBIDAS & EXTRAS</h2>
+    </div>
+    <div class="bebidas-row">
+      <div class="beb-card">
+        <span class="beb-emoji">🥤</span>
+        <div class="beb-name">Refri Lata</div>
+        <div class="beb-price">R$ 6</div>
+      </div>
+      <div class="beb-card">
+        <span class="beb-emoji">🍶</span>
+        <div class="beb-name">Refri 1 Litro</div>
+        <div class="beb-price">R$ 10</div>
+      </div>
+      <div class="beb-card">
+        <span class="beb-emoji">🥫</span>
+        <div class="beb-name">Molho da Casa</div>
+        <div class="beb-price">R$ 3</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-section reveal">
+    <div class="cta-bg"></div>
+    <h2 class="cta-title">PRONTO PARA PEDIR?</h2>
+    <p class="cta-sub">Entrega em Itabaiana e região · Delivery gratuito</p>
+    <a href="https://wa.me/5579996508292" target="_blank" class="btn-wa">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      PEDIR AGORA
+    </a>
+    <p style="font-size:12px;color:var(--txt3);margin-top:16px;position:relative;z-index:1">Também disponível no App Compre Sem Fila</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-logo">PIZZELATO</div>
+  <p class="footer-txt">Urban Pizza Cone · Itabaiana, SE · 🔥 Único na região</p>
+</footer>
+
+<!-- STICKY BUTTON -->
+<div class="sticky-cta">
+  <a href="https://wa.me/5579996508292" target="_blank" class="sticky-btn sticky-wa">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Pedir pelo WhatsApp
+  </a>
+</div>
+
+<script>
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e,i) => {
+    if(e.isIntersecting){
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      observer.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.1});
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
