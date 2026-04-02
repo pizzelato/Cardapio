@@ -18,14 +18,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--o:#c0692b;--o2:#e8681a;--bg:#0d0a08;--bg2:#1a1108;--bg3:#241808;--t:#f5f0eb;--t2:#d4c8b8;--t3:#8a7a6a;--gold:#d4af37}
+:root{--o:#e8681a;--o2:#ff8c3a;--bg:#060d1a;--bg2:#0a1528;--bg3:#0f1e38;--t:#f0eee8;--t2:#c8c0b0;--t3:#7a8a9a;--gold:#d4af37}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(232,104,26,.06) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(14,40,80,.4) 0%,transparent 50%),radial-gradient(ellipse at 50% 100%,rgba(232,104,26,.04) 0%,transparent 40%);pointer-events:none;z-index:0}
 #loading{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;gap:12px;transition:opacity .4s}
 #loading h1{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:6px;color:var(--o2)}
 #loading p{font-size:11px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;background:radial-gradient(ellipse at center,#2a1505 0%,var(--bg) 70%);position:relative}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;background:radial-gradient(ellipse at center,#0d1f3c 0%,#060d1a 65%),radial-gradient(ellipse at 50% 70%,rgba(232,104,26,.08) 0%,transparent 50%);position:relative}
 .hero-badge{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--o2);background:rgba(232,104,26,.1);border:1px solid rgba(232,104,26,.2);padding:6px 16px;border-radius:20px;margin-bottom:20px}
 .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,12vw,96px);letter-spacing:8px;line-height:.95;margin-bottom:8px}
 .hero h1 span{color:var(--o2)}
@@ -93,7 +94,7 @@ footer p{font-size:11px;color:var(--t3)}
 .slide{position:absolute;top:0;left:0;width:100%;opacity:0;transition:opacity .7s ease;pointer-events:none}
 .slide.active{opacity:1;pointer-events:auto;position:relative}
 .slide img{width:100%;height:auto;display:block;max-height:85vh;object-fit:contain;background:#111}
-.slide-dots{display:flex;justify-content:center;gap:7px;padding:12px 0;background:#0d0a08}
+.slide-dots{display:flex;justify-content:center;gap:7px;padding:12px 0;background:#060d1a}
 .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:all .3s}
 .dot.active{background:var(--o2);width:20px;border-radius:4px}
 .slider-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.55);border:none;color:#fff;font-size:28px;cursor:pointer;padding:12px 18px;z-index:10;border-radius:8px;transition:background .2s}.slider-nav:hover{background:rgba(232,104,26,.7)}
@@ -113,6 +114,7 @@ footer p{font-size:11px;color:var(--t3)}
       <button id="camp-splash-cta" onclick="event.stopPropagation();campSplashPedir()" style="flex:1;border:none;border-radius:10px;padding:13px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;color:#fff;background:#e8681a">🛒 Pedir Agora</button>
       <div style="text-align:center;min-width:50px">
         <div id="camp-splash-count" style="font-size:40px;font-weight:900;color:#fff;line-height:1;font-family:'Bebas Neue',sans-serif"></div>
+        <div id="camp-splash-pos" style="display:none;font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;font-weight:700"></div>
         <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:1px">seg</div>
       </div>
     </div>
@@ -159,7 +161,7 @@ footer p{font-size:11px;color:var(--t3)}
 
 <div id="topo-cardapio"></div>
 <!-- COMO PEDIR -->
-<div style="padding:50px 20px;background:#0d0a08;max-width:800px;margin:0 auto">
+<div style="padding:50px 20px;background:#060d1a;max-width:800px;margin:0 auto">
   <div style="text-align:center;margin-bottom:32px">
     <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--o2);margin-bottom:8px">Simples e rápido</div>
     <h2 style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:4px;color:var(--t)">COMO FAZER SEU PEDIDO</h2>
@@ -185,17 +187,8 @@ footer p{font-size:11px;color:var(--t3)}
     💡 <b>Dica:</b> Também disponível no app <b style="color:var(--o2)">QueroDelivery</b> — baixe e peça sem precisar do WhatsApp!
   </div>
 </div>
-<!-- ══ BANNER DESTAQUE ══ -->
-<div id="camp-banner" style="display:none;margin:0 16px 20px;border-radius:16px;overflow:hidden;position:relative;box-shadow:0 6px 28px rgba(0,0,0,.4)">
-  <img id="camp-banner-img" src="" style="width:100%;display:block;max-height:260px;object-fit:cover" alt="">
-  <div style="position:absolute;inset:0;background:linear-gradient(transparent 25%,rgba(0,0,0,.92))"></div>
-  <div style="position:absolute;bottom:0;left:0;right:0;padding:18px">
-    <div style="display:inline-block;background:#e8681a;color:#fff;font-size:10px;font-weight:800;letter-spacing:2px;padding:3px 12px;border-radius:20px;margin-bottom:8px">✨ DESTAQUE</div>
-    <div id="camp-banner-titulo" style="font-size:18px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:5px"></div>
-    <div id="camp-banner-desc" style="font-size:13px;color:rgba(255,255,255,.78);line-height:1.55;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-bottom:12px"></div>
-    <button id="camp-banner-cta" onclick="campBannerPedir()" style="border:none;border-radius:8px;padding:10px 20px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;color:#fff;background:#e8681a">🛒 Pedir este sabor</button>
-  </div>
-</div>
+<!-- ══ BANNERS DESTAQUE — MÚLTIPLOS ══ -->
+<div id="camp-banners-container" style="display:none;padding:0 16px 4px"></div>
 
 <main id="cardapio">
   <div id="menu-container">
@@ -424,7 +417,7 @@ async function enviarPedidoRetorno(){
   const its = Object.values(C);
   const tot = its.reduce((s,i)=>s+i.preco*i.qtd,0);
   const pgtoLabel={'pix':'💠 PIX','dinheiro':'💵 Dinheiro','debito':'💳 Débito','credito':'💳 Crédito'};
-  const now = new Date();
+  const now = new Date(Date.now() - 3*60*60*1000); // BRT
   const pedido = {
     cliente: salvo.nome, telefone: salvo.tel,
     endereco: end, referencia: ref,
@@ -449,6 +442,8 @@ async function enviarPedidoRetorno(){
   msg+='\n*Total: '+fmt(tot)+'*\n🚀 Frete: Grátis\n\nAguardo confirmação!';
   document.getElementById('modal-pedido').style.display='none';
   window.open('https://wa.me/5579996508292?text='+encodeURIComponent(msg),'_blank');
+  // Limpar carrinho e mostrar confirmação
+  setTimeout(()=>{ limparCarrinhoAposCompra(); }, 500);
 }
 window.enviarPedidoRetorno=enviarPedidoRetorno;
 
@@ -472,7 +467,7 @@ async function enviarPedidoWA(){
   const pgtoLabel={'pix':'💠 PIX','dinheiro':'💵 Dinheiro','debito':'💳 Débito','credito':'💳 Crédito'};
 
   // Salvar pedido no Firebase
-  const now = new Date();
+  const now = new Date(Date.now() - 3*60*60*1000); // BRT
   const pedido = {
     cliente: nome,
     telefone: tel,
@@ -509,8 +504,32 @@ async function enviarPedidoWA(){
   msg+='\n*Total: '+fmt(tot)+'*\n🚀 Frete: Grátis\n\nAguardo confirmação!';
   document.getElementById('modal-pedido').style.display='none';
   window.open('https://wa.me/5579996508292?text='+encodeURIComponent(msg),'_blank');
+  // Limpar carrinho e mostrar confirmação
+  setTimeout(()=>{ limparCarrinhoAposCompra(); }, 500);
 }
 window.enviarPedidoWA=enviarPedidoWA;
+
+function limparCarrinhoAposCompra(){
+  // Limpar carrinho global
+  Object.keys(C).forEach(k=>delete C[k]);
+  // Zerar contadores visuais
+  document.querySelectorAll('.qty-val').forEach(el=>el.textContent='0');
+  document.querySelectorAll('.qty-ctrl').forEach(el=>el.style.display='none');
+  document.querySelectorAll('.pitem').forEach(el=>el.classList.remove('no-qty'));
+  // Esconder barra do carrinho
+  const bar = document.getElementById('cart-bar');
+  if(bar) bar.style.display='none';
+  // Mostrar confirmação
+  const conf = document.createElement('div');
+  conf.innerHTML = '<div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#0f1e38;border:2px solid #e8681a;border-radius:16px;padding:28px 32px;text-align:center;z-index:999;box-shadow:0 20px 60px rgba(0,0,0,.6)">'
+    + '<div style="font-size:48px;margin-bottom:12px">✅</div>'
+    + '<div style="font-size:18px;font-weight:800;color:#f0eee8;margin-bottom:6px">Pedido Enviado!</div>'
+    + '<div style="font-size:13px;color:#7a8a9a">Aguarde a confirmação pelo WhatsApp</div>'
+    + '</div>';
+  document.body.appendChild(conf);
+  setTimeout(()=>{ conf.remove(); }, 3000);
+}
+window.limparCarrinhoAposCompra=limparCarrinhoAposCompra;
 
 function selPgtoCard(btn){
   document.querySelectorAll('.pgto-op').forEach(b=>{
@@ -563,7 +582,9 @@ const DES={Assinatura:'Nossa criação mais sofisticada.',Premium:'Ingredientes 
 
 function qty(id){ return `<div class="qty-ctrl"><button class="qty-btn" data-d="-">−</button><span class="qty-num" id="q-${id}">1</span><button class="qty-btn" data-d="+">+</button></div>`; }
 
+let PROD_LIST = []; // produtos carregados do Firebase
 function render(prods){
+  PROD_LIST = prods.filter(p=>p.ativo!==false);
   const ativos=prods.filter(p=>p.ativo!==false);
   let h=''; let first=true;
   CATS.forEach(cat=>{
@@ -618,51 +639,192 @@ getDoc(doc(db,'config','produtos')).then(s=>{
 }).catch(()=>{ document.getElementById('loading').style.display='none'; });
 
 onSnapshot(doc(db,'config','produtos'),s=>{ if(s.exists()){ const p=s.data().data||[]; if(p.length) render(p); } });
-// ══ CAMPANHA DESTAQUE ══
+// ══ CAMPANHAS DESTAQUE — MÚLTIPLAS ══
 const CAMP_WA = '5579996508292';
-let campDados = null;
+let campLista = [];
+let campAtualIdx = 0;
+let campTimer = null;
 
 async function campVerificar(){
   try {
-    const snap = await getDoc(doc(db,'config','campanha_cardapio'));
-    if(!snap.exists()) return;
-    const camp = snap.data();
-    if(!camp.ativa || !camp.fotoURL) return;
-    campDados = camp;
-    campMontarBanner(camp);
-    if(sessionStorage.getItem('pzl-camp-visto')){
-      document.getElementById('camp-banner').style.display='block';
-      return;
+    // Tentar carregar lista de múltiplas campanhas
+    const snap = await getDoc(doc(db,'config','campanhas_ativas'));
+    if(snap.exists()){
+      campLista = (snap.data().lista||[]).filter(c=>c.ativa!==false && (c.fotoURL||c.fotoBase64));
     }
-    campMontarSplash(camp);
-    document.getElementById('camp-splash').style.display='flex';
-    sessionStorage.setItem('pzl-camp-visto','1');
-    let seg = parseInt(camp.duracao)||5;
-    document.getElementById('camp-splash-count').textContent = seg;
-    const timer = setInterval(()=>{
-      seg--;
-      const el = document.getElementById('camp-splash-count');
-      if(el) el.textContent = seg;
-      if(seg<=0){ clearInterval(timer); campFecharSplash(); }
-    },1000);
-  } catch(e){ console.log('Camp:',e.message); }
+    // Fallback para campanha única antiga
+    if(!campLista.length){
+      const snapU = await getDoc(doc(db,'config','campanha_cardapio'));
+      if(snapU.exists()){
+        const c = snapU.data();
+        if(c.ativa && (c.fotoURL||c.fotoBase64)) campLista = [c];
+      }
+    }
+    if(!campLista.length) return;
+
+    // Normalizar fotoURL
+    campLista.forEach(c=>{ if(!c.fotoURL && c.fotoBase64) c.fotoURL = c.fotoBase64; });
+
+    // Montar todos os banners
+    campMontarBanners();
+
+    // Iniciar splash sequencial
+    campAtualIdx = 0;
+    campMostrarSplash(0);
+
+  } catch(e){ console.log('Camp erro:',e.message); }
 }
 
-function campMontarSplash(camp){
+function campMostrarSplash(idx){
+  if(idx >= campLista.length){ campFecharSplashFinal(); return; }
+  const camp = campLista[idx];
+  campAtualIdx = idx;
+
   const cor = {laranja:'#e8681a',verde:'#25d366',vermelho:'#e53e3e'}[camp.cor]||'#e8681a';
   document.getElementById('camp-splash-img').src = camp.fotoURL;
   document.getElementById('camp-splash-titulo').textContent = camp.titulo||'';
   document.getElementById('camp-splash-desc').textContent = camp.desc||'';
-  const c = document.getElementById('camp-splash-cta'); if(c) c.style.background=cor;
+  const cta = document.getElementById('camp-splash-cta');
+  if(cta) cta.style.background = cor;
+
+  // Indicadores de posição (ex: 1/3)
+  const counter = document.getElementById('camp-splash-pos');
+  if(counter && campLista.length > 1){
+    counter.textContent = (idx+1) + '/' + campLista.length;
+    counter.style.display = 'block';
+  } else if(counter){
+    counter.style.display = 'none';
+  }
+
+  const splash = document.getElementById('camp-splash');
+  splash.style.display = 'flex';
+  splash.style.opacity = '0';
+  splash.style.transition = 'opacity .3s';
+  setTimeout(()=>{ splash.style.opacity='1'; }, 30);
+
+  // Contagem regressiva
+  let seg = parseInt(camp.duracao)||5;
+  document.getElementById('camp-splash-count').textContent = seg;
+  if(campTimer) clearInterval(campTimer);
+  campTimer = setInterval(()=>{
+    seg--;
+    const el = document.getElementById('camp-splash-count');
+    if(el) el.textContent = seg;
+    if(seg<=0){
+      clearInterval(campTimer);
+      // Próxima campanha ou fechar
+      if(idx+1 < campLista.length){
+        // Fade out e próxima
+        splash.style.opacity='0';
+        setTimeout(()=> campMostrarSplash(idx+1), 350);
+      } else {
+        campFecharSplashFinal();
+      }
+    }
+  },1000);
 }
 
-function campMontarBanner(camp){
-  const cor = {laranja:'#e8681a',verde:'#25d366',vermelho:'#e53e3e'}[camp.cor]||'#e8681a';
-  document.getElementById('camp-banner-img').src = camp.fotoURL;
-  document.getElementById('camp-banner-titulo').textContent = camp.titulo||'';
-  document.getElementById('camp-banner-desc').textContent = camp.desc||'';
-  const c = document.getElementById('camp-banner-cta'); if(c) c.style.background=cor;
+function campFecharSplashFinal(){
+  const splash = document.getElementById('camp-splash');
+  if(!splash) return;
+  splash.style.transition='opacity .35s';
+  splash.style.opacity='0';
+  setTimeout(()=>{
+    splash.style.display='none';
+    splash.style.opacity='';
+    if(campTimer) clearInterval(campTimer);
+    // Mostrar todos os banners
+    document.getElementById('camp-banners-container').style.display='block';
+  },350);
 }
+
+function campMontarBanners(){
+  const container = document.getElementById('camp-banners-container');
+  if(!container) return;
+  container.innerHTML = campLista.map((camp,i)=>{
+    const cor = {laranja:'#e8681a',verde:'#25d366',vermelho:'#e53e3e'}[camp.cor]||'#e8681a';
+    const id = (camp.produto||'').replace(/[^a-z0-9]/gi,'_');
+    return `<div style="margin-bottom:14px;border-radius:16px;overflow:hidden;position:relative;box-shadow:0 6px 28px rgba(0,0,0,.4)">
+      <img src="${camp.fotoURL}" style="width:100%;display:block;max-height:220px;object-fit:cover" alt="">
+      <div style="position:absolute;inset:0;background:linear-gradient(transparent 25%,rgba(0,0,0,.92))"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:16px">
+        <div style="display:inline-block;background:#e8681a;color:#fff;font-size:10px;font-weight:800;letter-spacing:2px;padding:3px 12px;border-radius:20px;margin-bottom:7px">✨ DESTAQUE${campLista.length>1?' '+(i+1)+'/'+campLista.length:''}</div>
+        <div style="font-size:17px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:4px">${camp.titulo||''}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.78);line-height:1.55;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-bottom:11px">${camp.desc||''}</div>
+        <button onclick="campBannerPedir('${camp.id||i}','${camp.produto||''}')" style="border:none;border-radius:8px;padding:9px 18px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;color:#fff;background:${cor}">🛒 Pedir este sabor</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.campFecharSplash = function(){
+  if(campTimer) clearInterval(campTimer);
+  campFecharSplashFinal();
+};
+
+window.campSplashPedir = function(){
+  const camp = campLista[campAtualIdx];
+  if(!camp) return;
+  if(campTimer) clearInterval(campTimer);
+  campFecharSplashFinal();
+  setTimeout(()=>campAbrirModalComProduto(camp.produto||'', camp.titulo||''), 500);
+};
+function campAbrirModalComProduto(nomeProduto, tituloFallback){
+  // Adicionar produto ao carrinho se vinculado
+  if(nomeProduto && PROD_LIST.length){
+    const prod = PROD_LIST.find(p=>p.n===nomeProduto);
+    if(prod){
+      const pid = prod.n.replace(/[^a-z0-9]/gi,'_');
+      if(!C[pid]) C[pid] = {nome:prod.n, preco:prod.p||prod.preco||0, qtd:1};
+      else C[pid].qtd++;
+      atualizar();
+    }
+  }
+  // Se ainda sem itens, adicionar item genérico da campanha para forçar modal
+  if(!Object.keys(C).length){
+    const pid = (tituloFallback||'campanha').replace(/[^a-z0-9]/gi,'_');
+    C[pid] = {nome: tituloFallback||'Pedido Campanha', preco:0, qtd:1};
+    atualizar();
+  }
+  // Abrir modal de cadastro
+  const modal = document.getElementById('modal-pedido');
+  if(!modal){ 
+    const msg = encodeURIComponent('Olá! Vi o destaque "'+tituloFallback+'" e quero pedir!');
+    window.open('https://wa.me/'+CAMP_WA+'?text='+msg,'_blank');
+    return;
+  }
+  modal.style.display='flex';
+  const salvo = lerClienteSalvo();
+  if(salvo){
+    const mNovo = document.getElementById('modal-novo');
+    const mRet = document.getElementById('modal-retorno');
+    if(mNovo) mNovo.style.display='none';
+    if(mRet) mRet.style.display='block';
+    const retNome = document.getElementById('retorno-nome');
+    const retInfo = document.getElementById('retorno-info');
+    const retEnd = document.getElementById('ret-end');
+    const retRef = document.getElementById('ret-ref');
+    const retPgto = document.getElementById('ret-pgto');
+    if(retNome) retNome.textContent = salvo.nome;
+    if(retInfo) retInfo.textContent = salvo.tel + (salvo.end?' · '+salvo.end:'');
+    if(retEnd) retEnd.value = salvo.end||'';
+    if(retRef) retRef.value = '';
+    if(retPgto) retPgto.value = 'pix';
+  } else {
+    const mNovo = document.getElementById('modal-novo');
+    const mRet = document.getElementById('modal-retorno');
+    if(mNovo) mNovo.style.display='block';
+    if(mRet) mRet.style.display='none';
+  }
+}
+
+
+
+window.campBannerPedir = function(campId, produto){
+  const camp = campLista.find(c=>c.id===campId)||campLista[0];
+  const titulo = camp ? camp.titulo : '';
+  campAbrirModalComProduto(produto||'', titulo);
+};
 
 function campScrollProduto(nome){
   const id = nome.replace(/[^a-z0-9]/gi,'_');
@@ -676,27 +838,15 @@ function campScrollProduto(nome){
   }
 }
 
-window.campFecharSplash = function(){
-  const s = document.getElementById('camp-splash'); if(!s) return;
-  s.style.transition='opacity .3s'; s.style.opacity='0';
-  setTimeout(()=>{
-    s.style.display='none'; s.style.opacity='';
-    document.getElementById('camp-banner').style.display='block';
-    if(campDados&&campDados.produto) campScrollProduto(campDados.produto);
-  },300);
-};
-
-window.campSplashPedir = function(){
-  if(campDados&&campDados.produto){ window.campFecharSplash(); setTimeout(()=>campScrollProduto(campDados.produto),400); }
-  else { const msg=encodeURIComponent('Olá! Vi a campanha "'+(campDados&&campDados.titulo||'')+'" e quero pedido!'); window.open('https://wa.me/'+CAMP_WA+'?text='+msg,'_blank'); }
-};
-
-window.campBannerPedir = function(){
-  if(campDados&&campDados.produto){ campScrollProduto(campDados.produto); }
-  else { const msg=encodeURIComponent('Olá! Vi o destaque "'+(campDados&&campDados.titulo||'')+'" e quero pedir!'); window.open('https://wa.me/'+CAMP_WA+'?text='+msg,'_blank'); }
-};
-
-setTimeout(campVerificar, 900);
+async function campVerificarComRetry(tentativa=1){
+  try {
+    await campVerificar();
+  } catch(e) {
+    if(tentativa < 4) setTimeout(()=>campVerificarComRetry(tentativa+1), 1000*tentativa);
+    else console.log('Camp falhou após retries:', e.message);
+  }
+}
+setTimeout(campVerificarComRetry, 1200);
 
 
 // Calcular top 3 mais vendidos da semana — após render, sem bloquear
@@ -736,8 +886,8 @@ function calcularTopSemana(prods){
 </script>
 
 <!-- MODAL DADOS DO PEDIDO -->
-<div id="modal-pedido" style="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:flex-end;justify-content:center;padding:16px">
-  <div style="background:#1a1108;border:1px solid rgba(232,104,26,.3);border-radius:20px 20px 16px 16px;width:100%;max-width:500px;padding:24px;max-height:90vh;overflow-y:auto">
+<div id="modal-pedido" style="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;display:none;align-items:flex-end;justify-content:center;padding:16px">
+  <div style="background:#0a1528;border:1px solid rgba(232,104,26,.3);border-radius:20px 20px 16px 16px;width:100%;max-width:500px;padding:24px;max-height:90vh;overflow-y:auto">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
       <span style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--t)">📋 Dados do Pedido</span>
       <button onclick="document.getElementById('modal-pedido').style.display='none'" style="background:none;border:none;color:var(--t3);font-size:22px;cursor:pointer">×</button>
@@ -1007,7 +1157,7 @@ function pedirPermissaoNotificacao(){
   mo.id = 'mo-notif';
   mo.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:160;padding:12px;animation:slideUp .35s ease;touch-action:manipulation';
   mo.innerHTML = `
-    <div style="background:#1a1108;border:1px solid rgba(232,104,26,.4);border-radius:16px;padding:18px;box-shadow:0 -4px 24px rgba(0,0,0,.5)">
+    <div style="background:#0a1528;border:1px solid rgba(232,104,26,.4);border-radius:16px;padding:18px;box-shadow:0 -4px 24px rgba(0,0,0,.5)">
       <div style="display:flex;align-items:center;gap:12px">
         <div style="font-size:28px;flex-shrink:0">🔔</div>
         <div style="flex:1">
@@ -1054,7 +1204,7 @@ function pedirPermissaoNotificacao(){
       Notification.requestPermission().then(p => {
         if(p === 'granted'){
           const ok = document.createElement('div');
-          ok.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1108;border:1px solid rgba(26,122,60,.4);border-radius:12px;padding:12px 20px;font-size:13px;color:#22a050;font-weight:700;z-index:500;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.4)';
+          ok.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#0a1528;border:1px solid rgba(26,122,60,.4);border-radius:12px;padding:12px 20px;font-size:13px;color:#22a050;font-weight:700;z-index:500;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.4)';
           ok.textContent = '✅ Notificações ativadas!';
           document.body.appendChild(ok);
           setTimeout(() => ok.remove(), 3000);
