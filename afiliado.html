@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Portal do Parceiro — Pizzelato</title>
+<meta name="theme-color" content="#0A0A0A">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --fire:#C0692B; --fire2:#D47A3A; --gold:#C9A84C;
+  --black:#080808; --dark:#111; --dark2:#181818; --dark3:#202020; --dark4:#2A2A2A;
+  --gray:#555; --gray2:#888; --white:#F4F1ED; --green:#16a34a; --green2:#22c55e;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-serif;min-height:100vh}
+
+/* HEADER */
+.hdr{background:rgba(8,8,8,.97);border-bottom:1px solid rgba(192,105,43,.2);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-txt{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--white)}
+.logo-sub{font-size:8px;letter-spacing:2px;color:var(--fire);text-transform:uppercase}
+.badge-portal{background:linear-gradient(135deg,var(--fire),var(--fire2));border-radius:20px;padding:4px 12px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+
+/* LOGIN SCREEN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:80vh;padding:20px}
+.login-card{background:var(--dark2);border:1px solid rgba(192,105,43,.2);border-radius:20px;padding:32px 28px;width:100%;max-width:400px;text-align:center}
+.login-icon{font-size:56px;margin-bottom:16px}
+.login-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--white);margin-bottom:4px}
+.login-sub{font-size:12px;color:var(--gray2);margin-bottom:28px}
+.inp{width:100%;background:var(--dark3);border:1.5px solid rgba(192,105,43,.2);border-radius:12px;padding:13px 16px;font-family:'Montserrat',sans-serif;font-size:14px;color:var(--white);outline:none;margin-bottom:12px;transition:border-color .2s}
+.inp:focus{border-color:var(--fire)}
+.btn-login{width:100%;padding:14px;background:linear-gradient(135deg,var(--fire),var(--fire2));border:none;border-radius:12px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:800;color:#fff;cursor:pointer;letter-spacing:1px;transition:opacity .2s}
+.btn-login:hover{opacity:.9}
+.login-err{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:#f87171;margin-bottom:12px;display:none}
+.login-help{font-size:11px;color:var(--gray);margin-top:14px}
+.login-help a{color:var(--fire);text-decoration:none}
+
+/* APP */
+#app-screen{display:none;padding:20px;max-width:600px;margin:0 auto}
+
+/* CARDS MÉTRICAS */
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.metric-card{background:var(--dark2);border:1px solid rgba(192,105,43,.15);border-radius:14px;padding:16px;text-align:center}
+.metric-lbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);margin-bottom:6px}
+.metric-val{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px}
+.metric-sub{font-size:10px;color:var(--gray2);margin-top:2px}
+
+/* SEÇÕES */
+.section-card{background:var(--dark2);border:1px solid rgba(192,105,43,.15);border-radius:14px;margin-bottom:14px;overflow:hidden}
+.section-hdr{padding:14px 18px;border-bottom:1px solid rgba(192,105,43,.1);display:flex;align-items:center;gap:8px}
+.section-hdr-ico{font-size:18px}
+.section-hdr-txt{font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white)}
+.section-body{padding:16px 18px}
+
+/* LINK DE DIVULGAÇÃO */
+.link-box{background:var(--dark3);border:1.5px solid rgba(192,105,43,.3);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.link-txt{font-size:12px;color:var(--fire);font-weight:600;flex:1;word-break:break-all}
+.btn-copy{background:var(--fire);border:none;border-radius:8px;padding:8px 14px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+/* EXTRATO */
+.extrato-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px}
+.extrato-item:last-child{border-bottom:none}
+.extrato-data{color:var(--gray2)}
+.extrato-val{font-weight:700;color:var(--green2)}
+.extrato-status{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.status-pago{background:rgba(22,163,74,.15);color:var(--green2)}
+.status-pendente{background:rgba(192,105,43,.15);color:var(--fire2)}
+
+/* CHAT */
+.chat-msgs{max-height:300px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+.msg{padding:10px 14px;border-radius:12px;font-size:12px;line-height:1.6;max-width:85%}
+.msg-afil{background:rgba(192,105,43,.15);border:1px solid rgba(192,105,43,.2);color:var(--white);align-self:flex-end;border-radius:12px 12px 2px 12px}
+.msg-pizzelato{background:var(--dark3);border:1px solid rgba(255,255,255,.07);color:var(--white);align-self:flex-start;border-radius:12px 12px 12px 2px}
+.msg-autor{font-size:10px;font-weight:700;margin-bottom:3px}
+.msg-autor.afil{color:var(--fire)}
+.msg-autor.admin{color:var(--green2)}
+.msg-hora{font-size:9px;color:var(--gray2);margin-top:3px}
+.chat-input-row{display:flex;gap:8px}
+.chat-inp{flex:1;background:var(--dark3);border:1.5px solid rgba(192,105,43,.2);border-radius:10px;padding:11px 14px;font-family:'Montserrat',sans-serif;font-size:13px;color:var(--white);outline:none;resize:none}
+.chat-inp:focus{border-color:var(--fire)}
+.btn-send{background:var(--fire);border:none;border-radius:10px;padding:11px 16px;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
+
+/* LOGOUT */
+.btn-logout{width:100%;padding:12px;background:transparent;border:1.5px solid rgba(255,255,255,.1);border-radius:10px;font-family:'Montserrat',sans-serif;font-size:13px;color:var(--gray2);cursor:pointer;margin-top:8px;transition:all .2s}
+.btn-logout:hover{border-color:rgba(220,38,38,.4);color:#f87171}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;border:1px solid rgba(192,105,43,.3);border-radius:10px;padding:11px 20px;font-size:13px;color:var(--white);z-index:9999;animation:fadeUp .3s ease;white-space:nowrap}
+@keyframes fadeUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* BOTTOM NAV TABS */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,8,8,.97);border-top:1px solid rgba(192,105,43,.15);display:flex;z-index:200;backdrop-filter:blur(12px)}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px;cursor:pointer;transition:all .2s;gap:3px;border:none;background:none;font-family:'Montserrat',sans-serif}
+.bnav-item.active .bnav-ico{color:var(--fire)}
+.bnav-item.active .bnav-lbl{color:var(--fire)}
+.bnav-ico{font-size:20px;transition:transform .2s}
+.bnav-item.active .bnav-ico{transform:scale(1.15)}
+.bnav-lbl{font-size:9px;font-weight:700;letter-spacing:.5px;color:rgba(244,241,237,.4);text-transform:uppercase}
+.bnav-badge{position:absolute;top:6px;right:calc(50% - 18px);background:#dc2626;color:#fff;border-radius:10px;padding:1px 5px;font-size:9px;font-weight:800}
+
+/* TAB PAGES */
+.tab-page{display:none;padding:16px;max-width:600px;margin:0 auto;padding-bottom:80px}
+.tab-page.active{display:block;animation:fadeIn .25s ease}
+
+/* PROGRESS BAR */
+.progress-bar{height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin:6px 0}
+.progress-fill{height:100%;border-radius:4px;transition:width .6s ease}
+
+/* SLIDER */
+.slider-range{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:rgba(255,255,255,.1);outline:none}
+.slider-range::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--fire);cursor:pointer;box-shadow:0 2px 8px rgba(192,105,43,.4)}
+
+/* GATILHO CARD */
+.gatilho-card{background:var(--dark3);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .2s}
+.gatilho-card:hover{border-color:rgba(192,105,43,.3)}
+.gatilho-card.open .gatilho-body{display:block}
+.gatilho-body{display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+
+/* OBJEÇÃO CARD */
+.objecao-card{background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.15);border-radius:12px;padding:14px;margin-bottom:10px}
+.objecao-resp{background:rgba(22,163,74,.06);border:1px solid rgba(22,163,74,.15);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:12px;line-height:1.7;color:rgba(244,241,237,.7)}
+
+/* RANKING */
+.rank-item{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--dark3);border-radius:10px;margin-bottom:7px}
+.rank-pos{font-family:'Bebas Neue',sans-serif;font-size:22px;width:28px;text-align:center;flex-shrink:0}
+.rank-info{flex:1;min-width:0}
+.rank-nome{font-size:13px;font-weight:700;color:var(--white)}
+.rank-ped{font-size:11px;color:var(--gray2)}
+.rank-val{font-size:14px;font-weight:800;color:var(--green2);flex-shrink:0}
+
+/* PLANNER */
+.planner-dia{background:var(--dark3);border-radius:10px;padding:12px;margin-bottom:8px;border-left:3px solid transparent}
+.planner-dia.hoje{border-left-color:var(--fire)}
+.planner-dia-nome{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.planner-dia-dica{font-size:12px;color:var(--gray2);line-height:1.6}
+
+/* IA RESPONSE */
+.ia-response{background:rgba(192,105,43,.07);border:1px solid rgba(192,105,43,.2);border-radius:12px;padding:14px;font-size:13px;line-height:1.8;color:var(--white);white-space:pre-wrap;margin-top:12px;display:none}
+.ia-loading{display:none;text-align:center;padding:20px;color:var(--gray2);font-size:13px}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="logo">
+    <div>
+      <div class="logo-txt">PIZZELATO</div>
+      <div class="logo-sub">Urban Pizza Cone</div>
+    </div>
+  </div>
+  <div class="badge-portal">🤝 Portal Parceiro</div>
+</header>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-icon">🤝</div>
+    <div class="login-title">Portal do Parceiro</div>
+    <div class="login-sub">Entre com seu código e senha de parceiro</div>
+    <div class="login-err" id="login-err"></div>
+    <input class="inp" id="l-codigo" placeholder="Código do parceiro (ex: JOAO)" type="text" autocomplete="off" style="text-transform:uppercase">
+    <input class="inp" id="l-senha" placeholder="Senha" type="password">
+    <button class="btn-login" onclick="fazerLogin()">Entrar →</button>
+    <div class="login-help">Ainda não é parceiro? <a href="https://pizzelato.github.io/Cardapio#parceiros" target="_blank">Saiba mais aqui</a> ou fale pelo <a href="https://wa.me/5579998658211" target="_blank">WhatsApp</a></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen" style="display:none">
+
+  <!-- BOAS VINDAS FIXO -->
+  <div style="padding:12px 16px 0;max-width:600px;margin:0 auto">
+    <div style="padding:14px 16px;background:linear-gradient(135deg,rgba(192,105,43,.12),rgba(192,105,43,.04));border:1px solid rgba(192,105,43,.2);border-radius:14px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--fire)">Bem-vindo 👋</div>
+        <div id="app-nome" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px"></div>
+        <div id="app-cupom" style="font-size:11px;color:var(--gray2)"></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:9px;color:var(--gray2);text-transform:uppercase;letter-spacing:1px">Este mês</div>
+        <div id="met-mes-topo" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--fire)">0</div>
+        <div style="font-size:9px;color:var(--gray2)">pedidos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ TAB: INÍCIO ═══════════ -->
+  <div class="tab-page active" id="tab-inicio">
+
+    <!-- MÉTRICAS -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="metric-lbl">Pedidos gerados</div>
+        <div class="metric-val" id="met-pedidos" style="color:var(--fire)">0</div>
+        <div class="metric-sub">total acumulado</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-lbl">Comissão total</div>
+        <div class="metric-val" id="met-comissao" style="color:var(--green2);font-size:24px">R$0</div>
+        <div class="metric-sub">acumulado</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-lbl">A receber</div>
+        <div class="metric-val" id="met-pendente" style="color:var(--gold);font-size:24px">R$0</div>
+        <div class="metric-sub">pendente</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-lbl">Este mês</div>
+        <div class="metric-val" id="met-mes" style="color:var(--fire2)">0</div>
+        <div class="metric-sub">pedidos</div>
+      </div>
+    </div>
+
+    <!-- META SEMANAL -->
+    <div class="section-card" style="margin-bottom:14px">
+      <div class="section-hdr"><span class="section-hdr-ico">🎯</span><span class="section-hdr-txt">Meta da Semana</span></div>
+      <div class="section-body">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:12px;color:var(--gray2)"><span id="meta-atual">0</span> de <span id="meta-total">5</span> pedidos</span>
+          <span id="meta-ganho" style="font-size:13px;font-weight:800;color:var(--green2)">R$0</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="meta-bar" style="width:0%;background:linear-gradient(90deg,var(--fire),var(--fire2))"></div></div>
+        <div id="meta-msg" style="font-size:11px;color:var(--gray2);margin-top:6px">Continue assim! Cada pedido conta 🍕</div>
+      </div>
+    </div>
+
+    <!-- SIMULADOR DE GANHOS -->
+    <div class="section-card" style="margin-bottom:14px">
+      <div class="section-hdr"><span class="section-hdr-ico">📈</span><span class="section-hdr-txt">Simulador de Ganhos</span></div>
+      <div class="section-body">
+        <div style="font-size:12px;color:var(--gray2);margin-bottom:12px">Se eu vender <b id="sim-qtd" style="color:var(--fire)">10</b> pedidos por semana...</div>
+        <input type="range" class="slider-range" id="sim-slider" min="1" max="50" value="10" oninput="simCalcular(this.value)">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px">
+          <div style="background:var(--dark3);border-radius:10px;padding:10px;text-align:center">
+            <div style="font-size:9px;color:var(--gray2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Por semana</div>
+            <div id="sim-semana" style="font-size:18px;font-weight:800;color:var(--fire)">R$50</div>
+          </div>
+          <div style="background:var(--dark3);border-radius:10px;padding:10px;text-align:center">
+            <div style="font-size:9px;color:var(--gray2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Por mês</div>
+            <div id="sim-mes" style="font-size:18px;font-weight:800;color:var(--gold)">R$200</div>
+          </div>
+          <div style="background:var(--dark3);border-radius:10px;padding:10px;text-align:center">
+            <div style="font-size:9px;color:var(--gray2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Por ano</div>
+            <div id="sim-ano" style="font-size:18px;font-weight:800;color:var(--green2)">R$2.400</div>
+          </div>
+        </div>
+        <div id="sim-equiv" style="font-size:11px;color:var(--gray2);margin-top:10px;text-align:center;line-height:1.6"></div>
+      </div>
+    </div>
+
+    <!-- LINK DE DIVULGAÇÃO -->
+    <div class="section-card" style="margin-bottom:14px">
+      <div class="section-hdr"><span class="section-hdr-ico">🔗</span><span class="section-hdr-txt">Seu link exclusivo</span></div>
+      <div class="section-body">
+        <div class="link-box"><span class="link-txt" id="app-link">—</span><button class="btn-copy" onclick="copiarLink()">📋 Copiar</button></div>
+        <div style="display:flex;gap:8px">
+          <button onclick="compartilharWA()" style="flex:1;padding:10px;background:#25d366;border:none;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#fff;cursor:pointer">💬 WhatsApp</button>
+          <button onclick="compartilharStory()" style="flex:1;padding:10px;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);border:none;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#fff;cursor:pointer">📸 Instagram</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXTRATO -->
+    <div class="section-card">
+      <div class="section-hdr"><span class="section-hdr-ico">💰</span><span class="section-hdr-txt">Extrato de comissões</span></div>
+      <div class="section-body">
+        <div id="extrato-lista"><p style="font-size:12px;color:var(--gray2);text-align:center;padding:16px 0">Nenhum pedido ainda. Compartilhe seu link! 🚀</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ TAB: GUIA DE VENDAS ═══════════ -->
+  <div class="tab-page" id="tab-guia">
+
+    <!-- GERADOR DE MENSAGENS IA -->
+    <div class="section-card" style="margin-bottom:14px">
+      <div class="section-hdr"><span class="section-hdr-ico">🤖</span><span class="section-hdr-txt">Gerador de Mensagens IA</span></div>
+      <div class="section-body">
+        <p style="font-size:12px;color:var(--gray2);margin-bottom:12px;line-height:1.6">Descreva a situação e a IA cria a mensagem perfeita para você enviar.</p>
+        <select id="ia-situacao" style="width:100%;background:var(--dark3);border:1.5px solid rgba(192,105,43,.2);border-radius:10px;padding:11px 13px;font-family:'Montserrat',sans-serif;font-size:13px;color:var(--white);outline:none;margin-bottom:10px">
+          <option value="">Selecione a situação...</option>
+          <option value="amigo_proximo">👫 Amigo próximo</option>
+          <option value="colega_trabalho">💼 Colega de trabalho</option>
+          <option value="grupo_familia">👨‍👩‍👧 Grupo de família</option>
+          <option value="grupo_amigos">🥳 Grupo de amigos</option>
+          <option value="vizinho">🏘️ Vizinho / conhecido</option>
+          <option value="cliente_frio">❄️ Pessoa que não conheço bem</option>
+          <option value="story_instagram">📸 Story/reels Instagram</option>
+          <option value="status_whatsapp">📱 Status WhatsApp</option>
+          <option value="reativar_interessado">🔄 Pessoa que mostrou interesse antes</option>
+          <option value="ocasiao_especial">🎉 Ocasião especial (aniversário, fim de semana)</option>
+        </select>
+        <textarea id="ia-contexto" placeholder="Contexto extra (opcional): ex: 'minha amiga ama camarão', 'é sexta à noite', 'grupo tem 50 pessoas'..." style="width:100%;background:var(--dark3);border:1.5px solid rgba(192,105,43,.2);border-radius:10px;padding:11px 13px;font-family:'Montserrat',sans-serif;font-size:13px;color:var(--white);outline:none;resize:vertical;margin-bottom:10px" rows="2"></textarea>
+        <button onclick="gerarMsgIA()" id="ia-btn" style="width:100%;padding:13px;background:linear-gradient(135deg,var(--fire),var(--fire2));border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:800;color:#fff;cursor:pointer">🧠 Gerar Mensagem com IA</button>
+        <div class="ia-loading" id="ia-loading">⏳ Gerando mensagem personalizada...</div>
+        <div class="ia-response" id="ia-response"></div>
+        <div id="ia-actions" style="display:none;margin-top:10px;display:none;gap:8px">
+          <button onclick="copiarIAMsg()" style="flex:1;padding:10px;background:var(--fire);border:none;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#fff;cursor:pointer">📋 Copiar</button>
+          <button onclick="enviarIAWA()" style="flex:1;padding:10px;background:#25d366;border:none;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#fff;cursor:pointer">💬 Abrir WhatsApp</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GATILHOS MENTAIS -->
+    <div class="section-card" style="margin-bottom:14px">
+      <div class="section-hdr"><span class="section-hdr-ico">🎯</span><span class="section-hdr-txt">Gatilhos Mentais</span></div>
+      <div class="section-body">
+        <p style="font-size:12px;color:var(--gray2);margin-bottom:12px">Toque em cada gatilho para ver como usar na prática.</p>
+        <div id="gatilhos-lista"></div>
+      </div>
+    </div>
+
+    <!-- PASSO A PASSO DE ABORDAGEM -->
+    <div class="section-card" style="margin-bottom:14px">
+      <div class="section-hdr"><span class="section-hdr-ico">🚀</span><span class="section-hdr-txt">Como Abordar um Cliente Novo</span></div>
+      <div class="section-body">
+        <div style="display:flex;flex-direction:column;gap:10px" id="passo-lista"></div>
+      </div>
+    </div>
+
+    <!-- OBJEÇÕES -->
+    <div class="section-card" style="margin-bottom:14px">
+      <div class="section-hdr"><span class="section-hdr-ico">🛡️</span><span class="section-hdr-txt">Respondendo Objeções</span></div>
+      <div class="section-body">
+        <p style="font-size:12px;color:var(--gray2);margin-bottom:12px">O que fazer quando o cliente diz não.</p>
+        <div id="objecoes-lista"></div>
+      </div>
+    </div>
+
+    <!-- SCRIPTS PRONTOS -->
+    <div class="section-card">
+      <div class="section-hdr"><span class="section-hdr-ico">📝</span><span class="section-hdr-txt">Scripts Prontos</span></div>
+      <div class="section-body">
+        <div id="scripts-lista"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ TAB: PLANNER ═══════════ -->
+  <div class="tab-page" id="tab-planner">
+
+    <!-- PLANNER SEMANAL -->
+    <div class="section-card" style="margin-bottom:14px">
+      <div class="section-hdr"><span class="section-hdr-ico">📅</span><span class="section-hdr-txt">Planner de Postagens</span></div>
+      <div class="section-body">
+        <p style="font-size:12px;color:var(--gray2);margin-bottom:12px;line-height:1.6">Os melhores dias e horários para divulgar e maximizar conversão.</p>
+        <div id="planner-dias"></div>
+      </div>
+    </div>
+
+    <!-- KIT DE MATERIAIS -->
+    <div class="section-card" style="margin-bottom:14px">
+      <div class="section-hdr"><span class="section-hdr-ico">📦</span><span class="section-hdr-txt">Kit de Materiais Prontos</span></div>
+      <div class="section-body">
+        <p style="font-size:12px;color:var(--gray2);margin-bottom:12px">Copie e use direto. Adapte à sua voz se quiser.</p>
+        <div id="kit-lista"></div>
+      </div>
+    </div>
+
+    <!-- RANKING -->
+    <div class="section-card">
+      <div class="section-hdr"><span class="section-hdr-ico">🏆</span><span class="section-hdr-txt">Ranking de Parceiros</span></div>
+      <div class="section-body">
+        <p style="font-size:12px;color:var(--gray2);margin-bottom:12px">Top vendedores do mês. Você está entre eles?</p>
+        <div id="ranking-lista"><p style="font-size:12px;color:var(--gray2);text-align:center;padding:16px">Carregando ranking...</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ TAB: CHAT ═══════════ -->
+  <div class="tab-page" id="tab-chat">
+    <div class="section-card">
+      <div class="section-hdr"><span class="section-hdr-ico">💬</span><span class="section-hdr-txt">Chat com a Pizzelato</span></div>
+      <div class="section-body">
+        <p style="font-size:11px;color:var(--gray2);margin-bottom:12px">Tire dúvidas, envie sugestões ou informe problemas.</p>
+        <div class="chat-msgs" id="chat-msgs">
+          <div class="msg msg-pizzelato">
+            <div class="msg-autor admin">🍕 Pizzelato</div>
+            Olá! Seja bem-vindo ao programa de parceiros! Qualquer dúvida, é só falar aqui 😊
+            <div class="msg-hora">Automático</div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <textarea class="chat-inp" id="chat-inp" placeholder="Digite sua mensagem..." rows="2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();enviarMsg()}"></textarea>
+          <button class="btn-send" onclick="enviarMsg()">➤</button>
+        </div>
+      </div>
+    </div>
+    <button class="btn-logout" onclick="fazerLogout()" style="margin-top:16px">Sair da conta</button>
+    <div style="height:20px"></div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottom-nav" style="display:none">
+  <button class="bnav-item active" onclick="mudarTab('inicio',this)">
+    <span class="bnav-ico">🏠</span><span class="bnav-lbl">Início</span>
+  </button>
+  <button class="bnav-item" onclick="mudarTab('guia',this)">
+    <span class="bnav-ico">📚</span><span class="bnav-lbl">Guia</span>
+  </button>
+  <button class="bnav-item" onclick="mudarTab('planner',this)">
+    <span class="bnav-ico">📅</span><span class="bnav-lbl">Planner</span>
+  </button>
+  <button class="bnav-item" onclick="mudarTab('chat',this)" style="position:relative">
+    <span class="bnav-ico">💬</span><span class="bnav-lbl">Chat</span>
+    <span id="chat-badge" style="display:none;position:absolute;top:6px;right:calc(50% - 18px);background:#dc2626;color:#fff;border-radius:10px;padding:1px 5px;font-size:9px;font-weight:800">●</span>
+  </button>
+</nav>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+import { getFirestore, doc, getDoc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCfts7IfOB7eajaSoI-x1zsi8lRo3NDO70",
+  authDomain: "pizzelato-98e7c.firebaseapp.com",
+  projectId: "pizzelato-98e7c",
+  storageBucket: "pizzelato-98e7c.firebasestorage.app",
+  messagingSenderId: "1006771188857",
+  appId: "1:1006771188857:web:37553bdb10aef0e01ba0ea"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let _afiliado = null;
+let _chatUnsub = null;
+let _iaMsg = '';
+
+// ── DADOS ESTÁTICOS ──
+const GATILHOS = [
+  {ico:'⏰', titulo:'Urgência', sub:'Crie pressa para agir agora',
+   como:'Use quando a pessoa está em cima do muro. Horário de pico, última unidade, promoção limitada.',
+   exemplo:'"Hoje à noite tô pedindo pra galera, aproveita que ainda dá tempo de pegar no mesmo horário!"',
+   script:'"Ei! Só hoje à noite a Pizzelato tá com entrega rápida na sua região. Aproveita! 🍕"'},
+  {ico:'👥', titulo:'Prova Social', sub:'Todos estão pedindo — você também deveria',
+   como:'Mencione quantas pessoas já pediram, que o produto é popular, que a fila tá grande.',
+   exemplo:'"Já pedi 3 vezes esse mês, todo mundo aqui em casa virou fã"',
+   script:'"Cara, já indiquei pra 6 pessoas e todo mundo amou. O Cone de Camarão é absurdo 🔥"'},
+  {ico:'🎁', titulo:'Reciprocidade', sub:'Dê algo antes de pedir',
+   como:'Compartilhe uma foto, um vídeo, uma dica. Depois mencione o link.',
+   exemplo:'Manda uma foto do cone com o texto: "Olha que coisa linda que chegou aqui!" — só depois fala do link.',
+   script:'"Te mandei foto do meu pedido porque achei que você ia amar. Se quiser pedir: [link]"'},
+  {ico:'💎', titulo:'Escassez', sub:'O que é raro, é valioso',
+   como:'Sabores limitados, horário de funcionamento, área de entrega restrita.',
+   exemplo:'"Eles entregam só em Itabaiana, aproveita que você tá na área!"',
+   script:'"Hoje tem cone de Pistache Gold disponível — é o mais pedido e acaba rápido! 🍕"'},
+  {ico:'🤝', titulo:'Autoridade', sub:'Você recomenda porque conhece',
+   como:'Fale como se fosse especialista. Você já pediu, você sabe qual é o melhor.',
+   exemplo:'"Como alguém que já pediu umas 10 vezes, te digo: o de Filé com Camarão é o melhor"',
+   script:'"Sou parceiro oficial da Pizzelato e posso garantir: qualidade e entrega rápida. Meu cupom te dá desconto extra!"'},
+  {ico:'❤️', titulo:'Identificação', sub:'Fale da dor antes da solução',
+   como:'A pessoa tá com fome? Cansada de cozinhar? Quer algo diferente? Espelhe a situação antes de oferecer.',
+   exemplo:'"Sexta à noite, ninguém quer cozinhar. Eu também não. Aí eu peço pizza no cone e o problema tá resolvido"',
+   script:'"Sextou e o rango tá difícil né? Tenho a solução perfeita 🍕👇"'},
+];
+
+const OBJECOES = [
+  {obj:'"Tá caro"', resp:'"Entendo! Mas olha: é artesanal, feito na hora, com ingredientes de verdade — e entrega grátis. Sai bem mais barato que iFood com taxa de entrega. Tem opção a partir de R$22!"'},
+  {obj:'"Depois eu peço"', resp:'"Claro! Só lembrando que meu cupom tem um desconto especial que pode sair a qualquer momento. Se quiser garantir agora é só um clique 😊 [link]"'},
+  {obj:'"Nunca ouvi falar"', resp:'"Normal! É de Itabaiana e tá crescendo muito. Justamente por isso o desconto tá alto agora. Quando todo mundo conhecer, o preço normaliza. É a sua chance de experimentar primeiro!"'},
+  {obj:'"Não confio em pedir online"', resp:'"Eu entendo! Mas eu mesmo já pedi várias vezes. Paga no PIX só depois de confirmar o pedido. E dá pra acompanhar a entrega em tempo real pelo celular!"'},
+  {obj:'"Não tô com fome agora"', resp:'"Haha claro! Só deixa salvo o link pra quando bater aquela fome de sexta à noite 😄 [link] — use meu cupom e garante desconto!"'},
+  {obj:'"Entrega na minha rua?"', resp:'"Boa pergunta! Eles entregam em Itabaiana e região. Coloca seu endereço no pedido que eles confirmam antes de cobrar 😊"'},
+];
+
+const PASSOS = [
+  {n:'1', ico:'👀', titulo:'Observe antes de abordar', desc:'Veja se a pessoa costuma pedir delivery, se posta comida nos stories, se mora na área de entrega. A abordagem certa começa com informação.'},
+  {n:'2', ico:'🌡️', titulo:'Quebre o gelo primeiro', desc:'Nunca mande o link de cara. Fale de outra coisa antes. Elogie, comente algo do dia, responda um story dela. Crie conexão.'},
+  {n:'3', ico:'🎣', titulo:'Use o gancho certo', desc:'Identifique a "dor": está com fome? Cansada de cozinhar? Quer algo diferente? Fale da situação antes do produto.'},
+  {n:'4', ico:'📸', titulo:'Mostre antes de falar', desc:'Mande uma foto do cone, um vídeo do unboxing, um print do seu pedido. A pessoa precisa ver antes de querer.'},
+  {n:'5', ico:'💬', titulo:'Faça a pergunta certa', desc:'Não pergunte "quer pedir?". Pergunte "você prefere o de camarão ou o de filé mignon?" — já pressupõe o interesse.'},
+  {n:'6', ico:'🔗', titulo:'Entregue o link com contexto', desc:'Não mande o link solto. Diga: "olha o cardápio completo aqui, tem foto de tudo — use meu cupom [X] pra ganhar desconto!"'},
+  {n:'7', ico:'⏰', titulo:'Faça o follow-up', desc:'Se não respondeu em 2h, mande: "Conseguiu ver? Qualquer dúvida pode me chamar!" — simples e eficaz.'},
+];
+
+const SCRIPTS = [
+  {titulo:'📱 Para status do WhatsApp', msg:`🍕 *Pizza no Cone em Itabaiana!*\n\nArtesanal · Quentinho · Entrega rápida\n\n👉 Cardápio: pizzelato.github.io/Cardapio\n\nUse meu cupom *[SEU_CUPOM]* e ganhe desconto 🎁`},
+  {titulo:'👨‍👩‍👧 Para grupo de família', msg:`Família, descobri um lugar incrível aqui em Itabaiana! 🍕\n\nPizza no cone artesanal, entrega em casa, preço justo.\n\nJá pedi várias vezes e recomendo muito! Tem cone de camarão, filé mignon, doce...\n\nOlha o cardápio: pizzelato.github.io/Cardapio\nUsa meu cupom *[SEU_CUPOM]* que tem desconto especial 😊`},
+  {titulo:'💼 Para colega de trabalho', msg:`Oi! Indo pedir lanche agora, quer aproveitar?\n\nTem esse lugar que entrega pizza no cone 🍕 — muito bom!\nCardápio: pizzelato.github.io/Cardapio\n\nUsa meu cupom *[SEU_CUPOM]* pra ganhar desconto no primeiro pedido!`},
+  {titulo:'📸 Legenda de story/feed', msg:`Pizza no cone? Sim! 🍕🔥\n\nExperimentei a Pizzelato de Itabaiana e me arrependo de não ter pedido antes!\n\nCone crocante + recheio artesanal + entrega na porta = combinação perfeita ✨\n\nLink no bio ou acesse: pizzelato.github.io/Cardapio\nCupom de desconto: [SEU_CUPOM] 🎁`},
+  {titulo:'❄️ Para pessoa desconhecida', msg:`Oi! Desculpa o contato inesperado — vi que você é de Itabaiana e precisei compartilhar essa descoberta 😄\n\nTem uma pizzaria aqui que faz cone artesanal incrível, com entrega rápida.\n\nSe um dia quiser experimentar: pizzelato.github.io/Cardapio\nMeu cupom *[SEU_CUPOM]* dá desconto no primeiro pedido!\n\nAté mais! 🍕`},
+];
+
+const PLANNER = [
+  {dia:'Segunda', ico:'😴', calor:'frio', horario:'19h–21h', potencial:'Baixo',
+   cor:'#374151', dica:'Dia fraco para delivery. Se for postar, foque em "preparar o terreno" — conte uma história, mostre bastidores.'},
+  {dia:'Terça', ico:'🌱', calor:'morno', horario:'12h e 19h', potencial:'Médio',
+   cor:'#374151', dica:'Bom dia para grupos de trabalho no horário do almoço. Use o gatilho de rotina: "almoço sem preocupação".'},
+  {dia:'Quarta', ico:'📈', calor:'morno', horario:'12h e 20h', potencial:'Médio',
+   cor:'#374151', dica:'Meio da semana, pessoas começam a planejar o fim de semana. Plante a ideia: "já pensou no jantar de sexta?"'},
+  {dia:'Quinta', ico:'🔥', calor:'quente', horario:'18h–21h', potencial:'Alto',
+   cor:'#92400e', dica:'Véspera de sexta! As pessoas já estão no modo fim de semana. Excelente para promoções e urgência.'},
+  {dia:'Sexta', ico:'🚀', calor:'quente', horario:'17h–22h', potencial:'Muito Alto',
+   cor:'#b45309', dica:'O MELHOR DIA. Poste às 17h (saída do trabalho) e às 20h (hora do jantar). Use stories com contagem regressiva.'},
+  {dia:'Sábado', ico:'⭐', calor:'quente', horario:'11h, 16h e 20h', potencial:'Muito Alto',
+   cor:'#b45309', dica:'Dia de família e amigos. Foque em grupos, sugestão para almoço e jantar. Melhor para pedidos em quantidade.'},
+  {dia:'Domingo', ico:'🌅', calor:'morno', horario:'12h e 19h', potencial:'Alto',
+   cor:'#92400e', dica:'Almoço em família e jantar relaxado. Bom para públicos mais maduros e grupos familiares.'},
+];
+
+const KIT = [
+  {titulo:'🔥 Texto curto para status', msg:'Pizza no cone em casa! 🍕 pizhttp://pizzelato.github.io/Cardapio — cupom [SEU_CUPOM]'},
+  {titulo:'💬 Abordagem direta no privado', msg:'Ei! Você gosta de pizza? 👀 Preciso te mostrar uma coisa...'},
+  {titulo:'🍕 Descrição do produto', msg:'Cone de massa artesanal crocante, recheado até a borda, feito na hora e entregue quentinho. Tem de camarão, filé mignon, pistache gold, doce... você escolhe 🔥'},
+  {titulo:'📣 Chamada para ação', msg:'👇 Acessa, olha as fotos e me conta qual você vai pedir! pizzelato.github.io/Cardapio (cupom: [SEU_CUPOM])'},
+  {titulo:'⭐ Prova social pessoal', msg:'Já pedi [X] vezes e nunca decepcionou. Qualidade constante e entrega rápida — recomendo muito!'},
+];
+
+// ── TAB NAVIGATION ──
+window.mudarTab = function(tab, btn){
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(tab==='planner') carregarRanking();
+};
+
+// ── LOGIN ──
+window.fazerLogin = async function(){
+  const codigo = document.getElementById('l-codigo').value.trim().toUpperCase();
+  const senha  = document.getElementById('l-senha').value.trim();
+  const errEl  = document.getElementById('login-err');
+  errEl.style.display='none';
+  if(!codigo||!senha){ errEl.textContent='Preencha código e senha.'; errEl.style.display='block'; return; }
+  try {
+    const snap = await getDoc(doc(db,'config','afiliados'));
+    if(!snap.exists()){ errEl.textContent='Nenhum parceiro cadastrado ainda.'; errEl.style.display='block'; return; }
+    const lista = snap.data().lista||[];
+    const afil = lista.find(a=>a.cupom.toUpperCase()===codigo && a.senha===senha && a.ativo);
+    if(!afil){ errEl.textContent='Código ou senha incorretos.'; errEl.style.display='block'; return; }
+    _afiliado = afil;
+    localStorage.setItem('pzl_afil_session', JSON.stringify({cupom:afil.cupom, senha:afil.senha}));
+    mostrarApp();
+  } catch(e){ errEl.textContent='Erro de conexão: '+e.message; errEl.style.display='block'; }
+};
+
+// Auto-login
+(async ()=>{
+  try {
+    const sess = JSON.parse(localStorage.getItem('pzl_afil_session')||'null');
+    if(!sess) return;
+    const snap = await getDoc(doc(db,'config','afiliados'));
+    if(!snap.exists()) return;
+    const lista = snap.data().lista||[];
+    const afil = lista.find(a=>a.cupom.toUpperCase()===sess.cupom.toUpperCase()&&a.senha===sess.senha&&a.ativo);
+    if(afil){ _afiliado=afil; mostrarApp(); }
+  } catch(e){}
+})();
+
+function mostrarApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app-screen').style.display='block';
+  document.getElementById('bottom-nav').style.display='flex';
+
+  document.getElementById('app-nome').textContent = _afiliado.nome.toUpperCase();
+  document.getElementById('app-cupom').textContent = 'Cupom: '+_afiliado.cupom+' · R$'+(_afiliado.comissaoPorPedido||5)+'/pedido';
+
+  const link = 'https://pizzelato.github.io/Cardapio?ref='+_afiliado.cupom;
+  document.getElementById('app-link').textContent = link.replace('https://','');
+  window._linkAfil = link;
+
+  // Mensagem pronta global
+  window._msgPronta = `🍕 *Pizzelato — Urban Pizza Cone*\nCone artesanal quentinho na sua porta!\n\nPeça agora: ${link}\n\nUse meu cupom *${_afiliado.cupom}* e ganhe desconto especial! 😊\n\n🛵 Entrega em Itabaiana e região`;
+
+  renderGuia();
+  renderPlanner();
+  carregarDados();
+  iniciarChat();
+  simCalcular(10);
+}
+
+// ── DADOS ──
+async function carregarDados(){
+  try {
+    const snap = await getDoc(doc(db,'config','afil_extrato_'+_afiliado.cupom));
+    const extrato = snap.exists()?(snap.data().lista||[]):[];
+    const mesAtual = new Date().toISOString().slice(0,7);
+    const comissao = _afiliado.comissaoPorPedido||5;
+    const pedidos  = extrato.length;
+    const totalCom = pedidos*comissao;
+    const pendente = extrato.filter(e=>!e.pago).length*comissao;
+    const doMes    = extrato.filter(e=>(e.data||'').startsWith(mesAtual)).length;
+
+    document.getElementById('met-pedidos').textContent  = pedidos;
+    document.getElementById('met-comissao').textContent = 'R$'+totalCom;
+    document.getElementById('met-pendente').textContent = 'R$'+pendente;
+    document.getElementById('met-mes').textContent      = doMes;
+    document.getElementById('met-mes-topo').textContent = doMes;
+
+    // Meta semanal (meta = 5 pedidos na semana)
+    const hoje = new Date();
+    const semInicio = new Date(hoje); semInicio.setDate(hoje.getDate()-hoje.getDay());
+    const semInicioStr = semInicio.toISOString().slice(0,10);
+    const doSem = extrato.filter(e=>(e.data||'')>=semInicioStr).length;
+    const metaSem = 5;
+    const pct = Math.min(doSem/metaSem*100,100);
+    document.getElementById('meta-atual').textContent = doSem;
+    document.getElementById('meta-total').textContent = metaSem;
+    document.getElementById('meta-ganho').textContent = 'R$'+(doSem*comissao);
+    document.getElementById('meta-bar').style.width = pct+'%';
+    const msgs = ['Vamos lá! Primeiro pedido é o mais difícil 💪','Ótimo começo! Continue assim 🔥','Você tá indo bem! Mais da metade 🎯','Quase lá! Mais um pedido 🚀','🏆 Meta batida! Você é incrível!'];
+    document.getElementById('meta-msg').textContent = msgs[Math.min(doSem,4)];
+
+    // Extrato
+    const lista = document.getElementById('extrato-lista');
+    if(!extrato.length){
+      lista.innerHTML='<p style="font-size:12px;color:var(--gray2);text-align:center;padding:16px 0">Nenhum pedido ainda. Compartilhe seu link! 🚀</p>';
+    } else {
+      lista.innerHTML = extrato.slice().reverse().map(e=>`
+        <div class="extrato-item">
+          <div><div style="font-weight:600;color:var(--white)">${e.cliente||'Cliente'}</div><div class="extrato-data">${e.data||'—'}</div></div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="extrato-val">+R$${comissao}</span>
+            <span class="extrato-status ${e.pago?'status-pago':'status-pendente'}">${e.pago?'Pago':'Pendente'}</span>
+          </div>
+        </div>`).join('');
+    }
+  } catch(e){}
+}
+
+// ── SIMULADOR ──
+window.simCalcular = function(v){
+  const qtd = parseInt(v);
+  const com = _afiliado?.comissaoPorPedido||5;
+  document.getElementById('sim-qtd').textContent = qtd;
+  document.getElementById('sim-semana').textContent = 'R$'+(qtd*com);
+  document.getElementById('sim-mes').textContent = 'R$'+(qtd*com*4);
+  document.getElementById('sim-ano').textContent = 'R$'+(qtd*com*52).toLocaleString('pt-BR');
+  const anual = qtd*com*52;
+  const equivs = [
+    [600,'uma passagem aérea ida/volta'],
+    [1200,'um celular intermediário novo'],
+    [2400,'uma moto de entrada'],
+    [3600,'um mês de salário mínimo extra'],
+    [6000,'uma viagem internacional'],
+  ];
+  const equiv = equivs.filter(e=>anual>=e[0]).pop();
+  document.getElementById('sim-equiv').textContent = equiv ? `R$${anual.toLocaleString('pt-BR')}/ano — equivale a ${equiv[1]} 🎯` : `Comece com 1 pedido e veja crescer!`;
+};
+
+// ── GUIA DE VENDAS ──
+function renderGuia(){
+  // Gatilhos
+  const gEl = document.getElementById('gatilhos-lista');
+  if(gEl) gEl.innerHTML = GATILHOS.map((g,i)=>`
+    <div class="gatilho-card" id="gat-${i}" onclick="toggleGatilho(${i})">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:24px">${g.ico}</span>
+        <div style="flex:1"><div style="font-size:13px;font-weight:800;color:var(--white)">${g.titulo}</div><div style="font-size:11px;color:var(--gray2)">${g.sub}</div></div>
+        <span style="color:var(--gray2);font-size:16px" id="gat-arr-${i}">▼</span>
+      </div>
+      <div class="gatilho-body" id="gat-body-${i}">
+        <div style="font-size:12px;color:var(--gray2);margin-bottom:8px;line-height:1.7"><b style="color:var(--white)">Como usar:</b> ${g.como}</div>
+        <div style="font-size:12px;color:var(--gray2);margin-bottom:8px;line-height:1.7"><b style="color:var(--white)">Exemplo:</b> ${g.exemplo}</div>
+        <div style="background:rgba(192,105,43,.08);border:1px solid rgba(192,105,43,.2);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--fire);line-height:1.6;margin-bottom:8px">"${g.script.replace('[SEU_CUPOM]',_afiliado?.cupom||'SEU_CUPOM')}"</div>
+        <button onclick="event.stopPropagation();copiarTexto('${g.script.replace(/'/g,"\\'").replace('[SEU_CUPOM]',_afiliado?.cupom||'SEU_CUPOM')}')" style="padding:7px 14px;background:var(--fire);border:none;border-radius:7px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#fff;cursor:pointer">📋 Copiar script</button>
+      </div>
+    </div>`).join('');
+
+  // Passos
+  const pEl = document.getElementById('passo-lista');
+  if(pEl) pEl.innerHTML = PASSOS.map(p=>`
+    <div style="display:flex;gap:14px;padding:14px;background:var(--dark3);border-radius:12px">
+      <div style="width:36px;height:36px;background:linear-gradient(135deg,var(--fire),var(--fire2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${p.ico}</div>
+      <div><div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px">${p.n}. ${p.titulo}</div><div style="font-size:12px;color:var(--gray2);line-height:1.6">${p.desc}</div></div>
+    </div>`).join('');
+
+  // Objeções
+  const oEl = document.getElementById('objecoes-lista');
+  if(oEl) oEl.innerHTML = OBJECOES.map(o=>`
+    <div class="objecao-card">
+      <div style="font-size:13px;font-weight:700;color:#f87171">❌ "${o.obj}"</div>
+      <div class="objecao-resp">✅ ${o.resp.replace('[link]','<span style="color:var(--fire)">[seu link]</span>')}</div>
+      <button onclick="copiarTexto('${o.resp.replace(/'/g,"\\'").replace('[link]','')}')" style="margin-top:8px;padding:6px 12px;background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.2);border-radius:7px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:var(--green2);cursor:pointer">📋 Copiar resposta</button>
+    </div>`).join('');
+
+  // Scripts
+  const sEl = document.getElementById('scripts-lista');
+  if(sEl) sEl.innerHTML = SCRIPTS.map(s=>{
+    const msg = s.msg.replace(/\[SEU_CUPOM\]/g, _afiliado?.cupom||'SEU_CUPOM');
+    return `<div style="background:var(--dark3);border-radius:10px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:8px">${s.titulo}</div>
+      <div style="font-size:12px;color:rgba(244,241,237,.6);line-height:1.7;margin-bottom:8px;white-space:pre-wrap">${msg}</div>
+      <button onclick="copiarTexto('${msg.replace(/'/g,"\\'").replace(/\n/g,'\\n')}')" style="padding:7px 14px;background:var(--fire);border:none;border-radius:7px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#fff;cursor:pointer">📋 Copiar</button>
+    </div>`;
+  }).join('');
+}
+
+window.toggleGatilho = function(i){
+  const body = document.getElementById('gat-body-'+i);
+  const arr  = document.getElementById('gat-arr-'+i);
+  const card = document.getElementById('gat-'+i);
+  const open = body.style.display==='block';
+  body.style.display = open?'none':'block';
+  arr.textContent = open?'▼':'▲';
+  card.style.borderColor = open?'rgba(255,255,255,.07)':'rgba(192,105,43,.3)';
+};
+
+// ── PLANNER ──
+function renderPlanner(){
+  const hoje = new Date().getDay(); // 0=dom, 1=seg...
+  const diasNomes = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const dEl = document.getElementById('planner-dias');
+  if(dEl) dEl.innerHTML = PLANNER.map((p,i)=>{
+    const diaIdx = (i+1)%7; // Seg=1...Dom=0
+    const isHoje = (i===0&&hoje===1)||(i===1&&hoje===2)||(i===2&&hoje===3)||(i===3&&hoje===4)||(i===4&&hoje===5)||(i===5&&hoje===6)||(i===6&&hoje===0);
+    return `<div class="planner-dia ${isHoje?'hoje':''}" style="border-left-color:${p.cor}">
+      <div class="planner-dia-nome" style="color:${isHoje?'var(--fire)':'var(--white)'}">${p.ico} ${p.dia} ${isHoje?'(Hoje)':''} · <span style="color:${p.potencial==='Muito Alto'?'var(--green2)':p.potencial==='Alto'?'var(--gold)':p.potencial==='Médio'?'var(--fire2)':'var(--gray2)'}">${p.potencial}</span></div>
+      <div class="planner-dia-dica"><b>Melhor horário:</b> ${p.horario}<br>${p.dica}</div>
+    </div>`;
+  }).join('');
+
+  // Kit
+  const kEl = document.getElementById('kit-lista');
+  if(kEl) kEl.innerHTML = KIT.map(k=>{
+    const msg = k.msg.replace('[SEU_CUPOM]', _afiliado?.cupom||'SEU_CUPOM').replace('[link]', window._linkAfil||'');
+    return `<div style="background:var(--dark3);border-radius:10px;padding:12px;margin-bottom:8px">
+      <div style="font-size:12px;font-weight:700;color:var(--white);margin-bottom:6px">${k.titulo}</div>
+      <div style="font-size:12px;color:rgba(244,241,237,.6);line-height:1.6;margin-bottom:8px">${msg}</div>
+      <button onclick="copiarTexto('${msg.replace(/'/g,"\\'")}')" style="padding:6px 12px;background:var(--fire);border:none;border-radius:7px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#fff;cursor:pointer">📋 Copiar</button>
+    </div>`;
+  }).join('');
+}
+
+async function carregarRanking(){
+  try {
+    const snap = await getDoc(doc(db,'config','afiliados'));
+    const lista = snap.exists()?(snap.data().lista||[]):[];
+    const ativos = lista.filter(a=>a.ativo);
+    const ranking = [];
+    const mesAtual = new Date().toISOString().slice(0,7);
+    for(const a of ativos){
+      const es = await getDoc(doc(db,'config','afil_extrato_'+a.cupom));
+      const ext = es.exists()?(es.data().lista||[]):[];
+      const doMes = ext.filter(e=>(e.data||'').startsWith(mesAtual)).length;
+      ranking.push({nome:a.nome, cupom:a.cupom, pedidos:doMes, total:ext.length});
+    }
+    ranking.sort((a,b)=>b.pedidos-a.pedidos);
+    const medals = ['🥇','🥈','🥉'];
+    const rEl = document.getElementById('ranking-lista');
+    if(!rEl) return;
+    if(!ranking.length){ rEl.innerHTML='<p style="font-size:12px;color:var(--gray2);text-align:center;padding:16px">Seja o primeiro do ranking! 🚀</p>'; return; }
+    rEl.innerHTML = ranking.map((r,i)=>`
+      <div class="rank-item" style="${r.cupom===_afiliado?.cupom?'border:1.5px solid rgba(192,105,43,.4);background:rgba(192,105,43,.06)':''}">
+        <div class="rank-pos" style="color:${i<3?'var(--gold)':'var(--gray2)'}">${medals[i]||i+1}</div>
+        <div class="rank-info">
+          <div class="rank-nome">${r.nome} ${r.cupom===_afiliado?.cupom?'<span style="font-size:10px;color:var(--fire)">(você)</span>':''}</div>
+          <div class="rank-ped">${r.pedidos} pedidos este mês · ${r.total} total</div>
+        </div>
+        <div class="rank-val">R$${r.pedidos*(_afiliado?.comissaoPorPedido||5)}</div>
+      </div>`).join('');
+  } catch(e){}
+}
+
+// ── GERADOR IA ──
+window.gerarMsgIA = async function(){
+  const sit = document.getElementById('ia-situacao').value;
+  const ctx = document.getElementById('ia-contexto').value.trim();
+  if(!sit){ toast('Selecione a situação primeiro'); return; }
+
+  const btn = document.getElementById('ia-btn');
+  const loading = document.getElementById('ia-loading');
+  const response = document.getElementById('ia-response');
+  const actions = document.getElementById('ia-actions');
+
+  btn.disabled=true; btn.textContent='⏳ Gerando...';
+  loading.style.display='block'; response.style.display='none'; actions.style.display='none';
+
+  const situacoes = {
+    amigo_proximo:'amigo próximo e de confiança',
+    colega_trabalho:'colega de trabalho',
+    grupo_familia:'grupo de família no WhatsApp',
+    grupo_amigos:'grupo de amigos no WhatsApp',
+    vizinho:'vizinho ou conhecido',
+    cliente_frio:'pessoa que não conheço bem (abordagem fria)',
+    story_instagram:'story ou reels do Instagram',
+    status_whatsapp:'status do WhatsApp',
+    reativar_interessado:'pessoa que mostrou interesse antes mas não comprou',
+    ocasiao_especial:'ocasião especial como fim de semana ou feriado',
+  };
+
+  const prompt = `Você é um especialista em vendas e copywriting para delivery de comida. 
+Crie uma mensagem de vendas para um afiliado da Pizzelato (pizza no cone artesanal de Itabaiana-SE) enviar para: ${situacoes[sit]}.
+${ctx?'Contexto adicional: '+ctx:''}
+Cupom do afiliado: ${_afiliado?.cupom||'PARCEIRO'} (${_afiliado?.comissaoPorPedido||5}% ou R$5 de desconto para o cliente)
+Link: https://pizzelato.github.io/Cardapio
+
+REGRAS:
+- Máximo 5 linhas
+- Natural e autêntico, não pareça propaganda
+- Use o gatilho mental mais adequado para a situação
+- Inclua o cupom e o link
+- Use emojis com moderação
+- Português brasileiro informal
+- NÃO use aspas na mensagem, escreva diretamente
+
+Responda APENAS com a mensagem pronta, sem explicações.`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:300,messages:[{role:'user',content:prompt}]})
+    });
+    const data = await resp.json();
+    const txt = data.content?.[0]?.text?.trim()||'Erro ao gerar mensagem.';
+    _iaMsg = txt;
+    response.textContent = txt;
+    response.style.display='block';
+    actions.style.display='flex';
+    toast('✅ Mensagem gerada!');
+  } catch(e){ toast('Erro ao conectar com IA'); }
+  finally { btn.disabled=false; btn.textContent='🧠 Gerar Mensagem com IA'; loading.style.display='none'; }
+};
+
+window.copiarIAMsg = function(){ copiarTexto(_iaMsg); };
+window.enviarIAWA  = function(){ window.open('https://wa.me/?text='+encodeURIComponent(_iaMsg),'_blank'); };
+
+// ── CHAT ──
+function iniciarChat(){
+  if(_chatUnsub) _chatUnsub();
+  _chatUnsub = onSnapshot(doc(db,'config','afil_chat_'+_afiliado.cupom), snap=>{
+    if(!snap.exists()) return;
+    const msgs = snap.data().msgs||[];
+    const container = document.getElementById('chat-msgs');
+    if(!container) return;
+    if(msgs.length){
+      container.innerHTML = msgs.map(m=>`
+        <div class="msg ${m.de==='afiliado'?'msg-afil':'msg-pizzelato'}">
+          <div class="msg-autor ${m.de==='afiliado'?'afil':'admin'}">${m.de==='afiliado'?'👤 Você':'🍕 Pizzelato'}</div>
+          ${m.texto}<div class="msg-hora">${m.hora||''}</div>
+        </div>`).join('');
+      container.scrollTop = container.scrollHeight;
+    }
+    // Badge
+    const temNova = snap.data().lido===false && snap.data().msgs?.slice(-1)[0]?.de==='pizzelato';
+    const badge = document.getElementById('chat-badge');
+    if(badge) badge.style.display = temNova?'block':'none';
+  });
+}
+
+window.enviarMsg = async function(){
+  const inp = document.getElementById('chat-inp');
+  const txt = inp.value.trim(); if(!txt) return;
+  inp.value='';
+  const hora = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const msg = {de:'afiliado', texto:txt, hora, ts:Date.now()};
+  try {
+    const ref = doc(db,'config','afil_chat_'+_afiliado.cupom);
+    const snap = await getDoc(ref);
+    const msgs = snap.exists()?(snap.data().msgs||[]):[];
+    await setDoc(ref,{msgs:[...msgs,msg],afilNome:_afiliado.nome,ultimaMsg:txt,ultimaHora:hora,lido:false});
+  } catch(e){ toast('Erro ao enviar'); }
+};
+
+// ── UTILS ──
+window.copiarLink = function(){
+  copiarTexto(window._linkAfil||'');
+  toast('Link copiado! 🔗');
+};
+window.copiarMsgPronta = function(){ copiarTexto(window._msgPronta||''); };
+window.compartilharWA  = function(){ window.open('https://wa.me/?text='+encodeURIComponent(window._msgPronta||''),'_blank'); };
+window.compartilharStory = function(){ copiarLink(); toast('Link copiado! Cole no story 📸'); };
+
+window.copiarTexto = function(txt){
+  txt = txt.replace(/\\n/g,'\n');
+  navigator.clipboard.writeText(txt).then(()=>toast('📋 Copiado!')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('📋 Copiado!');
+  });
+};
+
+window.fazerLogout = function(){
+  localStorage.removeItem('pzl_afil_session');
+  if(_chatUnsub) _chatUnsub();
+  document.getElementById('app-screen').style.display='none';
+  document.getElementById('bottom-nav').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('l-codigo').value='';
+  document.getElementById('l-senha').value='';
+};
+
+document.getElementById('l-senha').addEventListener('keydown',e=>{ if(e.key==='Enter') fazerLogin(); });
+
+function toast(msg){
+  document.querySelectorAll('.toast').forEach(t=>t.remove());
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
+}
+</script>
+</body>
+</html>
