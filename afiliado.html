@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Portal do Parceiro — Pizzelato</title>
+<meta name="theme-color" content="#0A0A0A">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --fire:#C0692B; --fire2:#D47A3A; --gold:#C9A84C;
+  --black:#080808; --dark:#111; --dark2:#181818; --dark3:#202020; --dark4:#2A2A2A;
+  --gray:#555; --gray2:#888; --white:#F4F1ED; --green:#16a34a; --green2:#22c55e;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-serif;min-height:100vh}
+
+/* HEADER */
+.hdr{background:rgba(8,8,8,.97);border-bottom:1px solid rgba(192,105,43,.2);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-txt{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--white)}
+.logo-sub{font-size:8px;letter-spacing:2px;color:var(--fire);text-transform:uppercase}
+.badge-portal{background:linear-gradient(135deg,var(--fire),var(--fire2));border-radius:20px;padding:4px 12px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+
+/* LOGIN SCREEN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:80vh;padding:20px}
+.login-card{background:var(--dark2);border:1px solid rgba(192,105,43,.2);border-radius:20px;padding:32px 28px;width:100%;max-width:400px;text-align:center}
+.login-icon{font-size:56px;margin-bottom:16px}
+.login-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--white);margin-bottom:4px}
+.login-sub{font-size:12px;color:var(--gray2);margin-bottom:28px}
+.inp{width:100%;background:var(--dark3);border:1.5px solid rgba(192,105,43,.2);border-radius:12px;padding:13px 16px;font-family:'Montserrat',sans-serif;font-size:14px;color:var(--white);outline:none;margin-bottom:12px;transition:border-color .2s}
+.inp:focus{border-color:var(--fire)}
+.btn-login{width:100%;padding:14px;background:linear-gradient(135deg,var(--fire),var(--fire2));border:none;border-radius:12px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:800;color:#fff;cursor:pointer;letter-spacing:1px;transition:opacity .2s}
+.btn-login:hover{opacity:.9}
+.login-err{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:#f87171;margin-bottom:12px;display:none}
+.login-help{font-size:11px;color:var(--gray);margin-top:14px}
+.login-help a{color:var(--fire);text-decoration:none}
+
+/* APP */
+#app-screen{display:none;padding:20px;max-width:600px;margin:0 auto}
+
+/* CARDS MÉTRICAS */
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.metric-card{background:var(--dark2);border:1px solid rgba(192,105,43,.15);border-radius:14px;padding:16px;text-align:center}
+.metric-lbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray2);margin-bottom:6px}
+.metric-val{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px}
+.metric-sub{font-size:10px;color:var(--gray2);margin-top:2px}
+
+/* SEÇÕES */
+.section-card{background:var(--dark2);border:1px solid rgba(192,105,43,.15);border-radius:14px;margin-bottom:14px;overflow:hidden}
+.section-hdr{padding:14px 18px;border-bottom:1px solid rgba(192,105,43,.1);display:flex;align-items:center;gap:8px}
+.section-hdr-ico{font-size:18px}
+.section-hdr-txt{font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--white)}
+.section-body{padding:16px 18px}
+
+/* LINK DE DIVULGAÇÃO */
+.link-box{background:var(--dark3);border:1.5px solid rgba(192,105,43,.3);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.link-txt{font-size:12px;color:var(--fire);font-weight:600;flex:1;word-break:break-all}
+.btn-copy{background:var(--fire);border:none;border-radius:8px;padding:8px 14px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+/* EXTRATO */
+.extrato-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px}
+.extrato-item:last-child{border-bottom:none}
+.extrato-data{color:var(--gray2)}
+.extrato-val{font-weight:700;color:var(--green2)}
+.extrato-status{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.status-pago{background:rgba(22,163,74,.15);color:var(--green2)}
+.status-pendente{background:rgba(192,105,43,.15);color:var(--fire2)}
+
+/* CHAT */
+.chat-msgs{max-height:300px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+.msg{padding:10px 14px;border-radius:12px;font-size:12px;line-height:1.6;max-width:85%}
+.msg-afil{background:rgba(192,105,43,.15);border:1px solid rgba(192,105,43,.2);color:var(--white);align-self:flex-end;border-radius:12px 12px 2px 12px}
+.msg-pizzelato{background:var(--dark3);border:1px solid rgba(255,255,255,.07);color:var(--white);align-self:flex-start;border-radius:12px 12px 12px 2px}
+.msg-autor{font-size:10px;font-weight:700;margin-bottom:3px}
+.msg-autor.afil{color:var(--fire)}
+.msg-autor.admin{color:var(--green2)}
+.msg-hora{font-size:9px;color:var(--gray2);margin-top:3px}
+.chat-input-row{display:flex;gap:8px}
+.chat-inp{flex:1;background:var(--dark3);border:1.5px solid rgba(192,105,43,.2);border-radius:10px;padding:11px 14px;font-family:'Montserrat',sans-serif;font-size:13px;color:var(--white);outline:none;resize:none}
+.chat-inp:focus{border-color:var(--fire)}
+.btn-send{background:var(--fire);border:none;border-radius:10px;padding:11px 16px;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
+
+/* LOGOUT */
+.btn-logout{width:100%;padding:12px;background:transparent;border:1.5px solid rgba(255,255,255,.1);border-radius:10px;font-family:'Montserrat',sans-serif;font-size:13px;color:var(--gray2);cursor:pointer;margin-top:8px;transition:all .2s}
+.btn-logout:hover{border-color:rgba(220,38,38,.4);color:#f87171}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a1a;border:1px solid rgba(192,105,43,.3);border-radius:10px;padding:11px 20px;font-size:13px;color:var(--white);z-index:9999;animation:fadeUp .3s ease;white-space:nowrap}
+@keyframes fadeUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="logo">
+    <div>
+      <div class="logo-txt">PIZZELATO</div>
+      <div class="logo-sub">Urban Pizza Cone</div>
+    </div>
+  </div>
+  <div class="badge-portal">🤝 Portal Parceiro</div>
+</header>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-icon">🤝</div>
+    <div class="login-title">Portal do Parceiro</div>
+    <div class="login-sub">Entre com seu código e senha de parceiro</div>
+    <div class="login-err" id="login-err"></div>
+    <input class="inp" id="l-codigo" placeholder="Código do parceiro (ex: JOAO)" type="text" autocomplete="off" style="text-transform:uppercase">
+    <input class="inp" id="l-senha" placeholder="Senha" type="password">
+    <button class="btn-login" onclick="fazerLogin()">Entrar →</button>
+    <div class="login-help">Ainda não é parceiro? <a href="https://pizzelato.github.io/Cardapio#parceiros" target="_blank">Saiba mais aqui</a> ou fale pelo <a href="https://wa.me/5579998658211" target="_blank">WhatsApp</a></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen">
+  <!-- BOAS VINDAS -->
+  <div style="margin-bottom:20px;padding:18px;background:linear-gradient(135deg,rgba(192,105,43,.12),rgba(192,105,43,.04));border:1px solid rgba(192,105,43,.2);border-radius:16px">
+    <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--fire);margin-bottom:4px">Bem-vindo de volta 👋</div>
+    <div id="app-nome" style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px"></div>
+    <div id="app-cupom" style="font-size:12px;color:var(--gray2);margin-top:2px"></div>
+  </div>
+
+  <!-- MÉTRICAS -->
+  <div class="metrics">
+    <div class="metric-card">
+      <div class="metric-lbl">Pedidos gerados</div>
+      <div class="metric-val" id="met-pedidos" style="color:var(--fire)">0</div>
+      <div class="metric-sub">total acumulado</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-lbl">Comissão total</div>
+      <div class="metric-val" id="met-comissao" style="color:var(--green2);font-size:24px">R$0</div>
+      <div class="metric-sub">a receber / recebido</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-lbl">A receber</div>
+      <div class="metric-val" id="met-pendente" style="color:var(--gold);font-size:24px">R$0</div>
+      <div class="metric-sub">comissão pendente</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-lbl">Este mês</div>
+      <div class="metric-val" id="met-mes" style="color:var(--fire2)">0</div>
+      <div class="metric-sub">pedidos no mês</div>
+    </div>
+  </div>
+
+  <!-- LINK DE DIVULGAÇÃO -->
+  <div class="section-card">
+    <div class="section-hdr">
+      <span class="section-hdr-ico">🔗</span>
+      <span class="section-hdr-txt">Seu link de divulgação</span>
+    </div>
+    <div class="section-body">
+      <p style="font-size:12px;color:var(--gray2);margin-bottom:12px;line-height:1.6">Compartilhe esse link. Quando alguém pedir usando seu cupom, você ganha R$5 por pedido!</p>
+      <div class="link-box">
+        <span class="link-txt" id="app-link">—</span>
+        <button class="btn-copy" onclick="copiarLink()">📋 Copiar</button>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="compartilharWA()" style="flex:1;padding:10px;background:#25d366;border:none;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#fff;cursor:pointer">💬 Compartilhar no WhatsApp</button>
+        <button onclick="compartilharStory()" style="flex:1;padding:10px;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);border:none;border-radius:9px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#fff;cursor:pointer">📸 Story Instagram</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTRATO -->
+  <div class="section-card">
+    <div class="section-hdr">
+      <span class="section-hdr-ico">💰</span>
+      <span class="section-hdr-txt">Extrato de comissões</span>
+    </div>
+    <div class="section-body">
+      <div id="extrato-lista"><p style="font-size:12px;color:var(--gray2);text-align:center;padding:16px 0">Nenhum pedido ainda. Compartilhe seu link e comece a ganhar! 🚀</p></div>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="section-card">
+    <div class="section-hdr">
+      <span class="section-hdr-ico">💬</span>
+      <span class="section-hdr-txt">Chat com a Pizzelato</span>
+    </div>
+    <div class="section-body">
+      <p style="font-size:11px;color:var(--gray2);margin-bottom:12px">Tire dúvidas, envie sugestões ou informe problemas diretamente para a equipe.</p>
+      <div class="chat-msgs" id="chat-msgs">
+        <div class="msg msg-pizzelato">
+          <div class="msg-autor admin">🍕 Pizzelato</div>
+          Olá! Seja bem-vindo ao programa de parceiros! Qualquer dúvida, é só falar aqui 😊
+          <div class="msg-hora">Automático</div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <textarea class="chat-inp" id="chat-inp" placeholder="Digite sua mensagem..." rows="2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();enviarMsg()}"></textarea>
+        <button class="btn-send" onclick="enviarMsg()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DICAS -->
+  <div class="section-card">
+    <div class="section-hdr">
+      <span class="section-hdr-ico">💡</span>
+      <span class="section-hdr-txt">Dicas para vender mais</span>
+    </div>
+    <div class="section-body" style="display:flex;flex-direction:column;gap:10px">
+      <div style="background:var(--dark3);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--gray2);line-height:1.7">
+        <b style="color:var(--white)">📱 Divulgue nos stories</b><br>
+        Mostre o cardápio e mencione seu cupom. Stories com comida performam muito bem!
+      </div>
+      <div style="background:var(--dark3);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--gray2);line-height:1.7">
+        <b style="color:var(--white)">👥 Grupos de WhatsApp</b><br>
+        Compartilhe o link em grupos da família, trabalho e amigos. Foco nos horários de almoço e jantar.
+      </div>
+      <div style="background:var(--dark3);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--gray2);line-height:1.7">
+        <b style="color:var(--white)">🎯 Foque nos horários certos</b><br>
+        Sexta e sábado à noite são os melhores momentos. Envie seu link às 18h!
+      </div>
+      <div style="background:var(--dark3);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--gray2);line-height:1.7">
+        <b style="color:var(--white)">💬 Mensagem pronta para enviar</b><br>
+        <span id="dica-msg-pronta" style="color:var(--fire)">Carregando...</span>
+        <button onclick="copiarMsgPronta()" style="display:block;margin-top:8px;background:var(--fire);border:none;border-radius:7px;padding:7px 14px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#fff;cursor:pointer">📋 Copiar mensagem</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-logout" onclick="fazerLogout()">Sair da conta</button>
+  <div style="height:30px"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, arrayUnion } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCfts7IfOB7eajaSoI-x1zsi8lRo3NDO70",
+  authDomain: "pizzelato-98e7c.firebaseapp.com",
+  projectId: "pizzelato-98e7c",
+  storageBucket: "pizzelato-98e7c.firebasestorage.app",
+  messagingSenderId: "1006771188857",
+  appId: "1:1006771188857:web:37553bdb10aef0e01ba0ea"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let _afiliado = null;
+let _chatUnsub = null;
+
+// ── LOGIN ──
+window.fazerLogin = async function(){
+  const codigo = document.getElementById('l-codigo').value.trim().toUpperCase();
+  const senha  = document.getElementById('l-senha').value.trim();
+  const errEl  = document.getElementById('login-err');
+  errEl.style.display='none';
+
+  if(!codigo||!senha){ errEl.textContent='Preencha código e senha.'; errEl.style.display='block'; return; }
+
+  try {
+    const snap = await getDoc(doc(db,'config','afiliados'));
+    if(!snap.exists()){ errEl.textContent='Nenhum parceiro cadastrado ainda.'; errEl.style.display='block'; return; }
+    const lista = snap.data().lista||[];
+    const afil = lista.find(a=>a.cupom.toUpperCase()===codigo && a.senha===senha && a.ativo);
+    if(!afil){ errEl.textContent='Código ou senha incorretos.'; errEl.style.display='block'; return; }
+    _afiliado = afil;
+    localStorage.setItem('pzl_afil_session', JSON.stringify({cupom:afil.cupom, senha:afil.senha}));
+    mostrarApp();
+  } catch(e){ errEl.textContent='Erro de conexão: '+e.message; errEl.style.display='block'; }
+};
+
+// Auto-login
+(async ()=>{
+  try {
+    const sess = JSON.parse(localStorage.getItem('pzl_afil_session')||'null');
+    if(!sess) return;
+    const snap = await getDoc(doc(db,'config','afiliados'));
+    if(!snap.exists()) return;
+    const lista = snap.data().lista||[];
+    const afil = lista.find(a=>a.cupom.toUpperCase()===sess.cupom.toUpperCase()&&a.senha===sess.senha&&a.ativo);
+    if(afil){ _afiliado=afil; mostrarApp(); }
+  } catch(e){}
+})();
+
+function mostrarApp(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app-screen').style.display='block';
+
+  document.getElementById('app-nome').textContent = _afiliado.nome.toUpperCase();
+  document.getElementById('app-cupom').textContent = 'Cupom: '+_afiliado.cupom+' · R$ '+(_afiliado.comissaoPorPedido||5)+',00 por pedido';
+
+  const link = 'pizzelato.github.io/Cardapio?ref='+_afiliado.cupom;
+  document.getElementById('app-link').textContent = link;
+
+  // Mensagem pronta
+  const msgPronta = `🍕 *Pizzelato — Urban Pizza Cone*\nCone artesanal quentinho na sua porta!\n\nPeça agora pelo link:\nhttps://pizzelato.github.io/Cardapio\n\nUse meu cupom *${_afiliado.cupom}* e ganhe desconto especial! 😊\n\n🛵 Entrega em Itabaiana e região`;
+  document.getElementById('dica-msg-pronta').textContent = msgPronta;
+  window._msgPronta = msgPronta;
+
+  carregarDados();
+  iniciarChat();
+}
+
+async function carregarDados(){
+  try {
+    // Carregar vendas que usaram o cupom deste afiliado
+    const snap = await getDoc(doc(db,'config','afil_extrato_'+_afiliado.cupom));
+    const extrato = snap.exists() ? (snap.data().lista||[]) : [];
+
+    const mesAtual = new Date().toISOString().slice(0,7);
+    const pedidos  = extrato.length;
+    const comissao = _afiliado.comissaoPorPedido||5;
+    const totalCom = pedidos * comissao;
+    const pendente = extrato.filter(e=>!e.pago).length * comissao;
+    const doMes    = extrato.filter(e=>(e.data||'').startsWith(mesAtual)).length;
+
+    document.getElementById('met-pedidos').textContent  = pedidos;
+    document.getElementById('met-comissao').textContent = 'R$'+totalCom;
+    document.getElementById('met-pendente').textContent = 'R$'+pendente;
+    document.getElementById('met-mes').textContent      = doMes;
+
+    const lista = document.getElementById('extrato-lista');
+    if(!extrato.length){
+      lista.innerHTML='<p style="font-size:12px;color:var(--gray2);text-align:center;padding:16px 0">Nenhum pedido ainda. Compartilhe seu link e comece a ganhar! 🚀</p>';
+    } else {
+      lista.innerHTML = extrato.slice().reverse().map(e=>`
+        <div class="extrato-item">
+          <div>
+            <div style="font-weight:600;color:var(--white)">${e.cliente||'Cliente'}</div>
+            <div class="extrato-data">${e.data||'—'}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="extrato-val">+R$${comissao}</span>
+            <span class="extrato-status ${e.pago?'status-pago':'status-pendente'}">${e.pago?'Pago':'Pendente'}</span>
+          </div>
+        </div>`).join('');
+    }
+  } catch(e){}
+}
+
+function iniciarChat(){
+  if(_chatUnsub) _chatUnsub();
+  _chatUnsub = onSnapshot(doc(db,'config','afil_chat_'+_afiliado.cupom), snap=>{
+    if(!snap.exists()) return;
+    const msgs = snap.data().msgs||[];
+    const container = document.getElementById('chat-msgs');
+    // Manter mensagem inicial
+    const inicial = container.querySelector('.msg-pizzelato');
+    const temNovos = msgs.length > 0;
+    if(temNovos){
+      container.innerHTML = msgs.map(m=>`
+        <div class="msg ${m.de==='afiliado'?'msg-afil':'msg-pizzelato'}">
+          <div class="msg-autor ${m.de==='afiliado'?'afil':'admin'}">${m.de==='afiliado'?'👤 Você':'🍕 Pizzelato'}</div>
+          ${m.texto}
+          <div class="msg-hora">${m.hora||''}</div>
+        </div>`).join('');
+    } else if(inicial){
+      // mantém a mensagem de boas vindas
+    }
+    container.scrollTop = container.scrollHeight;
+  });
+}
+
+window.enviarMsg = async function(){
+  const inp = document.getElementById('chat-inp');
+  const txt = inp.value.trim();
+  if(!txt) return;
+  inp.value='';
+  const hora = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const msg = {de:'afiliado', texto:txt, hora, ts:Date.now()};
+  try {
+    const ref = doc(db,'config','afil_chat_'+_afiliado.cupom);
+    const snap = await getDoc(ref);
+    const msgs = snap.exists() ? (snap.data().msgs||[]) : [];
+    await setDoc(ref,{msgs:[...msgs,msg], afilNome:_afiliado.nome, ultimaMsg:txt, ultimaHora:hora, lido:false});
+    toast('Mensagem enviada ✓');
+  } catch(e){ toast('Erro ao enviar'); }
+};
+
+window.copiarLink = function(){
+  const link = 'https://pizzelato.github.io/Cardapio?ref='+_afiliado.cupom;
+  navigator.clipboard.writeText(link).then(()=>toast('Link copiado!')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=link;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Link copiado!');
+  });
+};
+
+window.copiarMsgPronta = function(){
+  const msg = window._msgPronta||'';
+  navigator.clipboard.writeText(msg).then(()=>toast('Mensagem copiada!')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=msg;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Mensagem copiada!');
+  });
+};
+
+window.compartilharWA = function(){
+  const msg = encodeURIComponent(window._msgPronta||'');
+  window.open('https://wa.me/?text='+msg,'_blank');
+};
+
+window.compartilharStory = function(){
+  copiarLink();
+  toast('Link copiado! Cole no story do Instagram 📸');
+};
+
+window.fazerLogout = function(){
+  localStorage.removeItem('pzl_afil_session');
+  if(_chatUnsub) _chatUnsub();
+  document.getElementById('app-screen').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('l-codigo').value='';
+  document.getElementById('l-senha').value='';
+};
+
+// ENTER no login
+document.getElementById('l-senha').addEventListener('keydown',e=>{ if(e.key==='Enter') fazerLogin(); });
+
+function toast(msg){
+  document.querySelectorAll('.toast').forEach(t=>t.remove());
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
+}
+</script>
+</body>
+</html>
