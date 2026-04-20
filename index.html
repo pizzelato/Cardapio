@@ -3323,6 +3323,7 @@ window.inscreverVIP = async function(){
     const pos = lista.length + 1;
     const ehEmbaixador = pos <= 5;
     const ts = Date.now();
+    let codEmb = null; // declarar fora do if para usar depois
 
     // Adicionar à lista
     lista.push({ nome, wa, pos, ts, embaixador: ehEmbaixador });
@@ -3335,7 +3336,7 @@ window.inscreverVIP = async function(){
 
     // Se é embaixador (top 5), criar cupom vitalício
     if(ehEmbaixador){
-      const codEmb = 'VIP'+nome.split(' ')[0].toUpperCase().replace(/[^A-Z]/g,'')+pos;
+      codEmb = 'VIP'+nome.split(' ')[0].toUpperCase().replace(/[^A-Z]/g,'')+pos;
       const cupSnap = await getDoc(doc(db,'config','cupons'));
       const cupons = cupSnap.exists()?(cupSnap.data().data||[]):[];
       if(!cupons.find(c=>c.codigo===codEmb)){
